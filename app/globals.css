@@ -11,8 +11,8 @@
   --color-ivory: #fef5dc;
   --color-ivory-dim: rgba(254, 245, 220, 0.72);
 
-  /* Header band behind the logo. One place to retune the green. */
-  --color-sage: #cddcc0;
+  /* Header band behind the logo, sampled from design-source/wavy-header-reference.png. */
+  --color-sage: #b2be85;
 
   --font-serif-display: var(--font-display), ui-serif, Georgia, "Times New Roman", serif;
   --font-body: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
