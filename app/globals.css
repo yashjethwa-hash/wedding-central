@@ -1,7 +1,7 @@
 :root {
   /* Cream lettering, sampled from the brand artwork. */
-  --ivory: #fcf1d9;
-  --ivory-dim: rgba(252, 241, 217, 0.72);
+  --ivory: #fef5dc;
+  --ivory-dim: rgba(254, 245, 220, 0.72);
 
   /*
    * Deep magenta sampled from bg-pattern.jpg. It paints underneath the image
