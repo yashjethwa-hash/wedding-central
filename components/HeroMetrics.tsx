@@ -1,17 +1,98 @@
-import type { ReactNode } from "react";
+"use client";
+
+import { useEffect, useId } from "react";
+import {
+  animate,
+  motion,
+  useMotionValue,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 
 type Metric = {
-  /** The figure itself, set large. */
-  value: string;
+  /** The figure the counter ticks up to. */
+  target: number;
+  /** Rendered immediately after the counter, outside the animated span. */
+  suffix?: string;
   /** What the figure counts, set small beneath it. */
   label: string;
+  /** Thousands separators only make sense on the large figure. */
+  grouped?: boolean;
 };
 
 const METRICS: Metric[] = [
-  { value: "30,000", label: "Indian's Get Married every year" },
-  { value: "6M+", label: "Wedding Attendees" },
-  { value: "12K+", label: "Struggle with Wedding decision making" },
+  { target: 30000, label: "Indian's Get Married every year", grouped: true },
+  { target: 6, suffix: "M+", label: "Wedding Attendees" },
+  { target: 12, suffix: "K+", label: "Struggle with Wedding decision making" },
 ];
+
+/** How long every counter takes to reach its target. */
+const COUNT_DURATION = 2;
+
+/** Scroll distance, in pixels, over which the metrics fade back. */
+const FADE_OVER = 420;
+const FADED_OPACITY = 0.2;
+
+/* -------------------------------------------------------------------------- */
+/* The wave                                                                    */
+/* -------------------------------------------------------------------------- */
+
+const WAVE_PERIOD = 160;
+const WAVE_HEIGHT = 64;
+
+/**
+ * One period of the wave, as the filled region *above* the curve.
+ *
+ * The tangent leaving x=0 and the tangent arriving at x=160 are both (40, -32),
+ * so butting two copies together leaves no visible kink — which is what lets
+ * this tile cleanly as an SVG `<pattern>`.
+ */
+const WAVE_PATH = `M0,32 C40,0 120,${WAVE_HEIGHT} ${WAVE_PERIOD},32 V0 H0 Z`;
+
+/* -------------------------------------------------------------------------- */
+
+function MetricFigure({
+  metric,
+  start,
+}: {
+  metric: Metric;
+  start: boolean;
+}) {
+  const count = useMotionValue(0);
+
+  // An explicit locale — relying on the runtime's default would risk the server
+  // and the client formatting the same number differently and breaking hydration.
+  const text = useTransform(count, (latest) => {
+    const n = Math.round(latest);
+    return metric.grouped ? n.toLocaleString("en-US") : String(n);
+  });
+
+  useEffect(() => {
+    if (!start) return;
+    const controls = animate(count, metric.target, {
+      duration: COUNT_DURATION,
+      ease: "easeOut",
+    });
+    return () => controls.stop();
+  }, [start, metric.target, count]);
+
+  return (
+    /*
+      `flex-col-reverse` puts the figure above its label on screen while the DOM
+      keeps label-then-value order, so a screen reader reads
+      "Wedding Attendees: 6M+" rather than a bare number.
+    */
+    <div className="flex flex-1 flex-col-reverse items-center gap-3 text-center">
+      <dt className="max-w-[24ch] font-body text-sm font-light leading-relaxed text-ivory-dim md:text-base">
+        {metric.label}
+      </dt>
+      <dd className="m-0 font-serif-display text-5xl font-medium leading-none tracking-tight text-ivory md:text-6xl lg:text-7xl">
+        <motion.span>{text}</motion.span>
+        {metric.suffix}
+      </dd>
+    </div>
+  );
+}
 
 export type HeroMetricsProps = {
   /**
@@ -24,17 +105,31 @@ export type HeroMetricsProps = {
   logoSrc?: string;
   /** Alternative text for the logo. */
   logoAlt?: string;
-  children?: ReactNode;
+  /**
+   * Whether the counters may run. Defaults to true, so the figures tick up on
+   * mount. The homepage passes `false` while the preloader is still on screen,
+   * otherwise the count would finish behind it and the reveal would land on
+   * three static numbers.
+   */
+  startCounting?: boolean;
 };
 
 export default function HeroMetrics({
   logoSrc = "/dd.png",
   logoAlt = "Wedding Central",
+  startCounting = true,
 }: HeroMetricsProps) {
+  // Unique per instance, so two HeroMetrics on one page cannot collide on the
+  // pattern's id and both end up painting the first one's wave.
+  const waveId = `hero-wave-${useId()}`;
+
+  const { scrollY } = useScroll();
+  const opacity = useTransform(scrollY, [0, FADE_OVER], [1, FADED_OPACITY]);
+
   return (
     <section className="w-full">
-      {/* Header band — solid light green, logo centred. */}
-      <div className="w-full bg-sage px-6 py-7 md:py-10">
+      {/* Header band — solid light sage, logo centred. */}
+      <div className="w-full bg-sage px-6 pt-7 pb-2 md:pt-10 md:pb-3">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={logoSrc}
@@ -43,31 +138,67 @@ export default function HeroMetrics({
         />
       </div>
 
+      {/* The band's wavy bottom edge. `-mt-px` closes the hairline that
+          subpixel rounding can otherwise open between the two. */}
+      <div className="-mt-px w-full text-sage">
+        {/*
+          Desktop: one period tiled through a <pattern> in user-space units, so
+          each crest stays exactly 160px wide however wide the screen gets —
+          no stretching, and no half-crest cut off at the right edge.
+        */}
+        <svg
+          className="hidden w-full md:block"
+          width="100%"
+          height={WAVE_HEIGHT}
+          aria-hidden="true"
+          focusable="false"
+        >
+          <defs>
+            <pattern
+              id={waveId}
+              width={WAVE_PERIOD}
+              height={WAVE_HEIGHT}
+              patternUnits="userSpaceOnUse"
+            >
+              <path d={WAVE_PATH} fill="currentColor" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill={`url(#${waveId})`} />
+        </svg>
+
+        {/*
+          Mobile: a single period stretched across the viewport. At phone widths
+          a tiled wave would cram several crests into 390px; elongating one
+          keeps the curve readable and it always ends flush with both edges.
+        */}
+        <svg
+          className="block h-10 w-full md:hidden"
+          viewBox={`0 0 ${WAVE_PERIOD} ${WAVE_HEIGHT}`}
+          preserveAspectRatio="none"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path d={WAVE_PATH} fill="currentColor" />
+        </svg>
+      </div>
+
       {/*
         Metrics — no background of its own, so the fixed damask painted by
         `body::before` shows through. Stacks on mobile, sits in a row from `md`.
       */}
-      <div className="flex min-h-[60vh] w-full items-center justify-center px-6 py-16 md:py-24">
-        <dl className="flex w-full max-w-5xl flex-col items-center justify-center gap-12 md:flex-row md:items-start md:gap-8">
+      <div className="flex min-h-[55vh] w-full items-center justify-center px-6 py-16 md:py-24">
+        <motion.dl
+          style={{ opacity }}
+          className="flex w-full max-w-5xl flex-col items-center justify-center gap-12 md:flex-row md:items-start md:gap-8"
+        >
           {METRICS.map((metric) => (
-            <div
-              key={metric.value}
-              /*
-                `flex-col-reverse` puts the figure above its label on screen
-                while the DOM keeps label-then-value order, so a screen reader
-                reads "Wedding Attendees: 6M+" rather than a bare number.
-              */
-              className="flex flex-1 flex-col-reverse items-center gap-3 text-center"
-            >
-              <dt className="max-w-[24ch] font-body text-sm font-light leading-relaxed text-ivory-dim md:text-base">
-                {metric.label}
-              </dt>
-              <dd className="m-0 font-serif-display text-5xl font-medium leading-none tracking-tight text-ivory md:text-6xl lg:text-7xl">
-                {metric.value}
-              </dd>
-            </div>
+            <MetricFigure
+              key={metric.label}
+              metric={metric}
+              start={startCounting}
+            />
           ))}
-        </dl>
+        </motion.dl>
       </div>
     </section>
   );
