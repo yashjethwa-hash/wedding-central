@@ -1,0 +1,42 @@
+:root {
+  --foreground: #2b2118;
+  --accent: #8a6a4f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  color: var(--foreground);
+  font-family: ui-serif, Georgia, "Times New Roman", serif;
+  /* The background layer below paints the page, so keep body itself transparent. */
+  background: transparent;
+}
+
+/*
+ * Fixed, full-bleed background pattern.
+ *
+ * A fixed pseudo-element is used instead of `background-attachment: fixed` so the
+ * image stays put while the page scrolls on mobile browsers too (iOS Safari
+ * ignores `background-attachment: fixed`).
+ */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image: url("/bg-pattern.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  /* Fallback tone in case the pattern has not loaded yet. */
+  background-color: #f6efe6;
+}
