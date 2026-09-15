@@ -1,3 +1,23 @@
+@import "tailwindcss";
+
+/*
+ * Brand tokens, exposed to Tailwind as utilities: `bg-sage`, `text-ivory`,
+ * `text-ivory-dim`, `font-serif-display`, `font-body`.
+ *
+ * The two font tokens chain to the CSS variables next/font defines in
+ * layout.tsx, so the self-hosted faces are what actually load.
+ */
+@theme {
+  --color-ivory: #fef5dc;
+  --color-ivory-dim: rgba(254, 245, 220, 0.72);
+
+  /* Header band behind the logo. One place to retune the green. */
+  --color-sage: #cddcc0;
+
+  --font-serif-display: var(--font-display), ui-serif, Georgia, "Times New Roman", serif;
+  --font-body: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
 :root {
   /* Cream lettering, sampled from the brand artwork. */
   --ivory: #fef5dc;
