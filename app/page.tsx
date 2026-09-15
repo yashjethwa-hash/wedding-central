@@ -30,8 +30,6 @@ export default function Home() {
             rather than already finished. */}
         <HeroMetrics startCounting={!isLoading} />
 
-        {/* Pulled up behind HeroMetrics by its own negative margin, so the two
-            read as one continuous scene rather than stacked bands. */}
         <FloatingBubbles />
       </motion.main>
     </>

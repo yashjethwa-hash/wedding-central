@@ -126,7 +126,7 @@ export default function HeroMetrics({
   const opacity = useTransform(scrollY, [0, FADE_OVER], [1, FADED_OPACITY]);
 
   return (
-    <section className="relative z-10 w-full">
+    <section className="w-full">
       {/* Header band — solid sage, logo centred. */}
       <div className="w-full bg-sage px-6 pt-7 pb-2 md:pt-10 md:pb-3">
         {/* eslint-disable-next-line @next/next/no-img-element */}
