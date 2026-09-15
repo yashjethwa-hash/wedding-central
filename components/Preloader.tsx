@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
  * Timeline for the preloader, in seconds.
  *
  * Everything is driven off these numbers, so retiming the sequence only means
- * editing this object — no need to hunt through the JSX.
+ * editing this object - no need to hunt through the JSX.
  */
 export const PRELOADER_TIMELINE = {
   /** How long `/dd.png` takes to fade in. */
@@ -22,11 +22,11 @@ export const PRELOADER_TIMELINE = {
   fadeOut: 0.7,
 } as const;
 
-/** Soft deceleration — quick off the mark, gentle landing. */
+/** Soft deceleration - quick off the mark, gentle landing. */
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 /* -------------------------------------------------------------------------- */
-/* Sizing — retune the lockup here rather than in the JSX.                     */
+/* Sizing - retune the lockup here rather than in the JSX.                     */
 /* -------------------------------------------------------------------------- */
 
 const MONOGRAM_WIDTH = "min(210px, 40vw)";
@@ -55,7 +55,7 @@ type Stage = "intro" | "assembled" | "exiting";
 
 export type PreloaderProps = {
   /**
-   * Fired once the container has finished fading out — driven by Framer's own
+   * Fired once the container has finished fading out - driven by Framer's own
    * completion callback rather than a timer, so the handover cannot land while
    * the fade is still painting.
    */
@@ -129,7 +129,7 @@ export default function Preloader({ onAnimationComplete }: PreloaderProps) {
       aria-label="Loading"
     >
       <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
-        {/* The monogram. Fades in, then shrinks in place — it never leaves. */}
+        {/* The monogram. Fades in, then shrinks in place - it never leaves. */}
         <motion.img
           src="/dd.png"
           alt=""
@@ -139,7 +139,7 @@ export default function Preloader({ onAnimationComplete }: PreloaderProps) {
           style={{ width: MONOGRAM_WIDTH, height: "auto", display: "block" }}
         />
 
-        {/* WE — slides in from the left, landing against the monogram. */}
+        {/* WE - slides in from the left, landing against the monogram. */}
         <motion.span
           initial={{ opacity: 0, x: "-70%" }}
           animate={{ opacity: assembled ? 1 : 0, x: assembled ? "0%" : "-70%" }}
@@ -153,7 +153,7 @@ export default function Preloader({ onAnimationComplete }: PreloaderProps) {
           WE
         </motion.span>
 
-        {/* ING — slides in from the right. */}
+        {/* ING - slides in from the right. */}
         <motion.span
           initial={{ opacity: 0, x: "70%" }}
           animate={{ opacity: assembled ? 1 : 0, x: assembled ? "0%" : "70%" }}
@@ -167,7 +167,7 @@ export default function Preloader({ onAnimationComplete }: PreloaderProps) {
           ING
         </motion.span>
 
-        {/* CENTRAL — rises into place directly under the lockup. */}
+        {/* CENTRAL - rises into place directly under the lockup. */}
         <motion.span
           initial={{ opacity: 0, y: 48 }}
           animate={{ opacity: assembled ? 1 : 0, y: assembled ? 0 : 48 }}

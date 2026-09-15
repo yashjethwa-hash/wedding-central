@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Preloader from "@/components/Preloader";
 import HeroMetrics from "@/components/HeroMetrics";
 import FloatingBubbles from "@/components/FloatingBubbles";
+import BlogSection from "@/components/BlogSection";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -31,6 +32,8 @@ export default function Home() {
         <HeroMetrics startCounting={!isLoading} />
 
         <FloatingBubbles />
+
+        <BlogSection />
       </motion.main>
     </>
   );

@@ -47,7 +47,7 @@ const WAVE_BOX_HEIGHT = 100;
  * Not a repeating wave: one lazy S that dips to a trough at 17% of the width
  * and rises to a crest at 75%, which is the shape in the artwork. Drawn with
  * `preserveAspectRatio="none"`, so the single curve stretches to whatever width
- * it is given — it spans any desktop width without a seam, and elongates to fit
+ * it is given - it spans any desktop width without a seam, and elongates to fit
  * rather than breaking on a phone.
  */
 const WAVE_PATH =
@@ -63,7 +63,7 @@ const WAVE_PATH =
 function MetricFigure({ metric, start }: { metric: Metric; start: boolean }) {
   const count = useMotionValue(0);
 
-  // An explicit locale — relying on the runtime's default would risk the server
+  // An explicit locale - relying on the runtime's default would risk the server
   // and the client formatting the same number differently and breaking hydration.
   const text = useTransform(count, (latest) => {
     const n = Math.round(latest);
@@ -102,7 +102,7 @@ export type HeroMetricsProps = {
    * Logo shown in the header band.
    *
    * Defaults to the monogram, which is the only logo currently in `public/`.
-   * Pass `/edited-image.png` once that file is added — note it needs to be dark
+   * Pass `/edited-image.png` once that file is added - note it needs to be dark
    * enough to read against the sage band.
    */
   logoSrc?: string;
@@ -127,7 +127,7 @@ export default function HeroMetrics({
 
   return (
     <section className="w-full">
-      {/* Header band — solid sage, logo centred. */}
+      {/* Header band - solid sage, logo centred. */}
       <div className="w-full bg-sage px-6 pt-7 pb-2 md:pt-10 md:pb-3">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -152,7 +152,7 @@ export default function HeroMetrics({
       </div>
 
       {/*
-        Metrics — no background of its own, so the fixed damask painted by
+        Metrics - no background of its own, so the fixed damask painted by
         `body::before` shows through. Stacks on mobile, sits in a row from `md`.
       */}
       <div className="flex min-h-[55vh] w-full items-center justify-center px-6 py-16 md:py-24">

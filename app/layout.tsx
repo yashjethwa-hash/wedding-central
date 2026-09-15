@@ -6,7 +6,7 @@ import "./globals.css";
  * Closest free matches to the lettering in the brand artwork.
  *
  * The preloader words are PNGs, so these faces are for the rest of the site.
- * If the original design file names the real typefaces, swap them in here —
+ * If the original design file names the real typefaces, swap them in here -
  * nothing else needs to change, since everything reads the CSS variables.
  */
 const display = Playfair_Display({

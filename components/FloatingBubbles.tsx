@@ -47,6 +47,16 @@ const QUADRANTS = [
 
 const DIAMETER_MIN = 132;
 const DIAMETER_MAX = 300;
+
+/**
+ * Empty bubbles scattered across the whole section, behind and between the
+ * four question bubbles. They carry no text, so they are free to sit anywhere
+ * and to overlap anything without making something harder to read.
+ */
+const DECOR_COUNT = 18;
+/** Decorative diameters, as a fraction of a question bubble's. */
+const DECOR_SMALL: [number, number] = [0.14, 0.26];
+const DECOR_MEDIUM: [number, number] = [0.32, 0.52];
 /** How much of the shorter quadrant edge a bubble may take up. */
 const QUADRANT_FILL = 0.86;
 /** Breathing room between a bubble and its quadrant's edge, in percent. */
@@ -56,7 +66,7 @@ const GUTTER = 1;
  * Font size as a fraction of the bubble's diameter.
  *
  * Longer questions take a smaller face. The measure is fixed, so smaller type
- * fits more characters per line — which is what keeps even the longest question
+ * fits more characters per line - which is what keeps even the longest question
  * to three or four lines instead of five.
  */
 function fontScaleFor(label: string) {
@@ -143,6 +153,165 @@ type Slot = {
   popAfter: number;
 };
 
+type Decor = {
+  id: number;
+  /** Diameter in px. */
+  d: number;
+  /** The grid cell this bubble keeps to, in percent of the section. */
+  cell: { x0: number; x1: number; y0: number; y1: number };
+  x: number;
+  y: number;
+  driftX: number;
+  driftY: number;
+  driftMs: number;
+  delayMs: number;
+  popAfter: number;
+};
+
+/** A random point inside a rectangle, inset so the bubble is not born straddling an edge. */
+function spotIn(cell: Decor["cell"], d: number, vw: number, vh: number) {
+  const halfX = ((d / 2) / vw) * 100;
+  const halfY = ((d / 2) / vh) * 100;
+  const x0 = Math.max(halfX, cell.x0);
+  const x1 = Math.min(100 - halfX, cell.x1);
+  const y0 = Math.max(halfY, cell.y0);
+  const y1 = Math.min(100 - halfY, cell.y1);
+  return {
+    x: x0 < x1 ? rand(x0, x1) : (x0 + x1) / 2,
+    y: y0 < y1 ? rand(y0, y1) : (y0 + y1) / 2,
+  };
+}
+
+/**
+ * Scatter the empty bubbles across the whole section.
+ *
+ * Stratified rather than uniform: the section is split into a coarse grid and
+ * one bubble is dropped at random inside each cell. Drawing all of them from a
+ * single uniform distribution clumps badly at this count, leaving one half of
+ * the section crowded and the other bare. This keeps every position random
+ * while guaranteeing the coverage is even, and each bubble stays in its cell on
+ * respawn so the coverage holds over time.
+ */
+function buildDecor(vw: number, vh: number, base: number): Decor[] {
+  const cols = vw < 768 ? 3 : 6;
+  const rows = Math.ceil(DECOR_COUNT / cols);
+  const cw = 100 / cols;
+  const ch = 100 / rows;
+
+  return Array.from({ length: DECOR_COUNT }, (_, id) => {
+    const range = id % 3 === 0 ? DECOR_MEDIUM : DECOR_SMALL;
+    const d = base * rand(range[0], range[1]);
+    const col = id % cols;
+    const row = Math.floor(id / cols);
+    const cell = { x0: col * cw, x1: (col + 1) * cw, y0: row * ch, y1: (row + 1) * ch };
+    return {
+      id,
+      d,
+      cell,
+      ...spotIn(cell, d, vw, vh),
+      driftX: rand(10, 34),
+      driftY: rand(14, 46),
+      driftMs: rand(11, 22) * 1000,
+      delayMs: rand(0, 7) * 1000,
+      popAfter: rand(POP_AFTER_MIN, POP_AFTER_MAX),
+    };
+  });
+}
+
+/* -------------------------------------------------------------------------- */
+
+function DecorBubble({
+  decor,
+  src,
+  vw,
+  vh,
+}: {
+  decor: Decor;
+  src: string;
+  vw: number;
+  vh: number;
+}) {
+  const reduced = useReducedMotion();
+  const [spot, setSpot] = useState({ n: 0, x: decor.x, y: decor.y });
+
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const scale = useMotionValue(0.6);
+  const opacity = useMotionValue(0);
+
+  useEffect(() => {
+    if (reduced) {
+      scale.set(1);
+      opacity.set(1);
+      return;
+    }
+
+    // The pop left these at 1.2 and 0; reset so a respawn fades in the same way
+    // the first appearance did rather than shrinking into view.
+    scale.set(0.6);
+    opacity.set(0);
+
+    const controls = [
+      animate(scale, 1, SPAWN),
+      animate(opacity, 1, SPAWN),
+      animate(x, [0, decor.driftX, -decor.driftX * 0.7, 0], {
+        duration: decor.driftMs / 1000,
+        delay: decor.delayMs / 1000,
+        repeat: Infinity,
+        repeatType: "mirror",
+        ease: "easeInOut",
+      }),
+      animate(y, [0, -decor.driftY, decor.driftY * 0.6, 0], {
+        duration: (decor.driftMs * 0.85) / 1000,
+        delay: decor.delayMs / 1000,
+        repeat: Infinity,
+        repeatType: "mirror",
+        ease: "easeInOut",
+      }),
+    ];
+
+    const pop = setTimeout(() => {
+      animate(scale, 1.2, POP);
+      animate(opacity, 0, POP);
+    }, decor.popAfter);
+
+    const back = setTimeout(() => {
+      setSpot((s) => ({ n: s.n + 1, ...spotIn(decor.cell, decor.d, vw, vh) }));
+    }, decor.popAfter + POP.duration * 1000 + RESPAWN_DELAY);
+
+    return () => {
+      controls.forEach((c) => c.stop());
+      clearTimeout(pop);
+      clearTimeout(back);
+    };
+    // `spot.n` restarts the whole cycle when the bubble comes back somewhere new.
+  }, [reduced, decor, spot.n, vw, vh, x, y, scale, opacity]);
+
+  return (
+    /* eslint-disable-next-line @next/next/no-img-element */
+    <motion.img
+      src={src}
+      alt=""
+      style={{
+        position: "absolute",
+        width: decor.d,
+        height: decor.d,
+        left: `${spot.x}%`,
+        top: `${spot.y}%`,
+        marginLeft: -decor.d / 2,
+        marginTop: -decor.d / 2,
+        x,
+        y,
+        scale,
+        opacity,
+        display: "block",
+        mixBlendMode: "hard-light",
+        filter: "drop-shadow(0 0 10px rgba(255, 255, 255, 0.35))",
+      }}
+    />
+  );
+}
+
 /* -------------------------------------------------------------------------- */
 
 function Bubble({
@@ -160,7 +329,7 @@ function Bubble({
 
   // Held in a ref and kept out of the effect's deps below. The parent hands
   // down a fresh closure on every render, and one slot respawning re-renders
-  // all four — depending on it directly would restart every bubble's timers
+  // all four - depending on it directly would restart every bubble's timers
   // and drift each time any one of them came back.
   const respawnRef = useRef(onRespawn);
   useEffect(() => {
@@ -169,7 +338,7 @@ function Bubble({
 
   // The artwork and the text are siblings rather than nested, because
   // `mix-blend-mode` only reaches as far as its nearest stacking-context
-  // ancestor — wrapping them in a shared animated div would box the blend in
+  // ancestor - wrapping them in a shared animated div would box the blend in
   // and it would composite against nothing. They are driven by the same motion
   // values instead, so they move as one without either being inside the other.
   const x = useMotionValue(0);
@@ -292,6 +461,8 @@ export default function FloatingBubbles({
 }: FloatingBubblesProps) {
   const [layout, setLayout] = useState<Layout | null>(null);
   const [slots, setSlots] = useState<Slot[] | null>(null);
+  const [decor, setDecor] = useState<Decor[] | null>(null);
+  const [view, setView] = useState({ vw: 0, vh: 0 });
 
   // A shuffled deck, so every question gets shown before any repeats, and a
   // record of what is on screen so two bubbles never carry the same one.
@@ -319,8 +490,12 @@ export default function FloatingBubbles({
   }, []);
 
   const build = useCallback(() => {
-    const l = measure(window.innerWidth, window.innerHeight);
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const l = measure(vw, vh);
     setLayout(l);
+    setView({ vw, vh });
+    setDecor(buildDecor(vw, vh, l.diameter));
     deck.current = [];
     onScreen.current = new Set();
     setSlots(
@@ -384,6 +559,11 @@ export default function FloatingBubbles({
       </ul>
 
       <div aria-hidden="true">
+        {/* Painted first so the question bubbles sit over them. */}
+        {decor?.map((d) => (
+          <DecorBubble key={d.id} decor={d} src={src} vw={view.vw} vh={view.vh} />
+        ))}
+
         {layout &&
           slots?.map((slot, i) => (
             <Bubble
