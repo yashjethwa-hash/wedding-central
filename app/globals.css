@@ -1,6 +1,17 @@
 :root {
-  --foreground: #2b2118;
-  --accent: #8a6a4f;
+  /* Cream lettering, sampled from the brand artwork. */
+  --ivory: #fcf1d9;
+  --ivory-dim: rgba(252, 241, 217, 0.72);
+
+  /*
+   * Deep magenta sampled from bg-pattern.jpg. It paints underneath the image
+   * so the first frame is never a white flash — the page comes up the right
+   * colour and the damask resolves on top of it.
+   */
+  --magenta: #a31a57;
+
+  --font-display-stack: var(--font-display), ui-serif, Georgia, "Times New Roman", serif;
+  --font-sans-stack: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
 * {
@@ -15,8 +26,8 @@ body {
 }
 
 body {
-  color: var(--foreground);
-  font-family: ui-serif, Georgia, "Times New Roman", serif;
+  color: var(--ivory);
+  font-family: var(--font-sans-stack);
   /* The background layer below paints the page, so keep body itself transparent. */
   background: transparent;
 }
@@ -27,16 +38,21 @@ body {
  * A fixed pseudo-element is used instead of `background-attachment: fixed` so the
  * image stays put while the page scrolls on mobile browsers too (iOS Safari
  * ignores `background-attachment: fixed`).
+ *
+ * `cover` suits the supplied portrait artwork: it fills any viewport without
+ * seams, at the cost of enlarging the damask on wide screens. If you would
+ * rather keep the motifs at a fixed size, swap the two lines marked below for
+ * `background-repeat: repeat` and `background-size: 540px auto` — only do that
+ * with a seamlessly tiling export, or the edges will show.
  */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: -1;
+  background-color: var(--magenta);
   background-image: url("/bg-pattern.jpg");
-  background-size: cover;
+  background-size: cover; /* tiling: 540px auto */
+  background-repeat: no-repeat; /* tiling: repeat */
   background-position: center;
-  background-repeat: no-repeat;
-  /* Fallback tone in case the pattern has not loaded yet. */
-  background-color: #f6efe6;
 }

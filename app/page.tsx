@@ -31,10 +31,26 @@ export default function Home() {
           textAlign: "center",
         }}
       >
-        <h1 style={{ margin: 0, fontSize: "clamp(2rem, 6vw, 3.5rem)", fontWeight: 400 }}>
+        <h1
+          style={{
+            margin: 0,
+            fontFamily: "var(--font-display-stack)",
+            fontSize: "clamp(2rem, 6vw, 3.5rem)",
+            fontWeight: 500,
+            letterSpacing: "0.01em",
+          }}
+        >
           Wedding Central
         </h1>
-        <p style={{ margin: 0, maxWidth: "38ch", lineHeight: 1.6, color: "var(--accent)" }}>
+        <p
+          style={{
+            margin: 0,
+            maxWidth: "38ch",
+            lineHeight: 1.7,
+            fontWeight: 300,
+            color: "var(--ivory-dim)",
+          }}
+        >
           Placeholder homepage — the real content goes here once the preloader has
           handed over.
         </p>
