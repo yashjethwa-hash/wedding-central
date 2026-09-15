@@ -18,7 +18,7 @@ const display = Playfair_Display({
 
 const sans = Montserrat({
   subsets: ["latin"],
-  weight: ["200", "300", "400"],
+  weight: ["200", "300", "400", "600", "700"],
   variable: "--font-sans",
   display: "swap",
 });

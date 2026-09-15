@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Preloader from "@/components/Preloader";
 import HeroMetrics from "@/components/HeroMetrics";
+import FloatingBubbles from "@/components/FloatingBubbles";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -28,6 +29,10 @@ export default function Home() {
         {/* The counters wait for the preloader, so the reveal catches them mid-tick
             rather than already finished. */}
         <HeroMetrics startCounting={!isLoading} />
+
+        {/* Pulled up behind HeroMetrics by its own negative margin, so the two
+            read as one continuous scene rather than stacked bands. */}
+        <FloatingBubbles />
       </motion.main>
     </>
   );
