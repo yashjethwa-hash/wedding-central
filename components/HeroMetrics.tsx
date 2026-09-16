@@ -31,6 +31,10 @@ const COUNT_DURATION = 2;
 const FADE_OVER = 420;
 const FADED_OPACITY = 0.2;
 
+/** WE and ING, sized off the monogram's height the way the preloader sizes them. */
+const WORDMARK =
+  "font-serif-display text-[2.8rem] font-medium leading-none text-ivory md:text-[4rem]";
+
 /* -------------------------------------------------------------------------- */
 /* The wave                                                                    */
 /* -------------------------------------------------------------------------- */
@@ -120,14 +124,34 @@ export default function HeroMetrics({
 
   return (
     <section className="w-full">
-      {/* Header band - solid sage, logo centred. */}
-      <div className="w-full bg-sage px-6 pt-7 pb-2 md:pt-10 md:pb-3">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={logoSrc}
-          alt={logoAlt}
-          className="mx-auto block h-14 w-auto md:h-20"
-        />
+      {/* Header band - solid sage, wordmark centred. */}
+      <div className="w-full bg-sage px-6 pt-7 pb-3 md:pt-10 md:pb-5">
+        {/*
+          The same lockup the preloader assembles: WE and ING either side of the
+          monogram, CENTRAL set beneath it. The preloader has to position the
+          words absolutely so the monogram stays pinned while they fly in; here
+          nothing moves, so a plain flex row does the job. The negative margins
+          close up the monogram's own transparent edge.
+
+          Hidden from assistive tech and named once by the label below, or it
+          would be read out as three separate words.
+        */}
+        <div className="flex flex-col items-center" aria-hidden="true">
+          <div className="flex items-center justify-center">
+            <span className={`${WORDMARK} -mr-[0.04em]`}>WE</span>
+
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={logoSrc} alt="" className="block h-14 w-auto md:h-20" />
+
+            <span className={`${WORDMARK} -ml-[0.04em]`}>ING</span>
+          </div>
+
+          <span className="mt-1 font-body text-[0.6rem] font-light tracking-[0.42em] text-ivory indent-[0.42em] md:mt-1.5 md:text-[0.8rem]">
+            CENTRAL
+          </span>
+        </div>
+
+        <span className="sr-only">{logoAlt}</span>
       </div>
 
       {/* The band's wavy bottom edge. `-mt-px` closes the hairline that
