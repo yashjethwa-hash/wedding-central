@@ -6,6 +6,10 @@ export type Blog = {
   category: BlogCategory;
   author: string;
   readTime: string;
+  /** ISO date, YYYY-MM-DD. Rendered through formatDate so it never varies by locale. */
+  date: string;
+  /** Card and hero artwork. Placeholder art for now, one per post once shot. */
+  image: string;
   excerpt: string;
   /**
    * Article body as an HTML string.
@@ -18,6 +22,36 @@ export type Blog = {
   content: string;
 };
 
+/**
+ * Stand-in artwork until per-post photography lands. Swapping a post's art is
+ * then a one-line change on that post rather than a change to the components.
+ */
+const PLACEHOLDER_IMAGE = "/bg-pattern.jpg";
+
+const MONTHS = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+/**
+ * Formats an ISO date without touching Date or Intl, so the server and the
+ * browser cannot disagree about the runtime locale and break hydration.
+ */
+export function formatDate(iso: string) {
+  const [year, month, day] = iso.split("-");
+  return `${Number(day)} ${MONTHS[Number(month) - 1]} ${year}`;
+}
+
 export const blogs: Blog[] = [
   {
     slug: "wedding-photographer-prep",
@@ -25,6 +59,8 @@ export const blogs: Blog[] = [
     category: "Planning",
     author: "Bushra",
     readTime: "5 min read",
+    date: "2026-08-28",
+    image: PLACEHOLDER_IMAGE,
     excerpt:
       "Your photographer is the only vendor whose work you will still be looking at in thirty years. Here is how to brief them properly.",
     content: `
@@ -56,6 +92,8 @@ export const blogs: Blog[] = [
     category: "Attending",
     author: "Bushra",
     readTime: "4 min read",
+    date: "2026-08-14",
+    image: PLACEHOLDER_IMAGE,
     excerpt:
       "Nobody hands you a rulebook with the invitation. Here is what everyone else seems to already know.",
     content: `
@@ -88,6 +126,8 @@ export const blogs: Blog[] = [
     category: "Planning",
     author: "Sanah",
     readTime: "5 min read",
+    date: "2026-07-30",
+    image: PLACEHOLDER_IMAGE,
     excerpt:
       "Social media rebuilt how India plans weddings, from vendor discovery to which rituals get revived. That is not all bad.",
     content: `
@@ -119,6 +159,8 @@ export const blogs: Blog[] = [
     category: "Planning",
     author: "Nalin",
     readTime: "6 min read",
+    date: "2026-07-11",
+    image: PLACEHOLDER_IMAGE,
     excerpt:
       "What to wear, across every function, without losing the ability to sit down, eat, or dance.",
     content: `
@@ -151,6 +193,8 @@ export const blogs: Blog[] = [
     category: "Planning",
     author: "Parnika",
     readTime: "6 min read",
+    date: "2026-06-24",
+    image: PLACEHOLDER_IMAGE,
     excerpt:
       "A smaller budget is a design constraint, not a compromise. Where the money actually goes, and where it does not need to.",
     content: `
@@ -182,7 +226,7 @@ export const blogs: Blog[] = [
   },
 ];
 
-/** The two hub sections, in the order they appear on the blog index. */
+/** Every category, in display order. Kept for filtering the hub later on. */
 export const CATEGORIES: BlogCategory[] = ["Planning", "Attending"];
 
 export function getBlogBySlug(slug: string) {

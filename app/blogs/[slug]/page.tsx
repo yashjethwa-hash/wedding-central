@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { blogs, getBlogBySlug } from "@/data/blogs";
+import { blogs, formatDate, getBlogBySlug } from "@/data/blogs";
 
 /** In Next 15 route params arrive as a promise and have to be awaited. */
 type Params = { params: Promise<{ slug: string }> };
@@ -79,6 +79,8 @@ export default async function BlogPage({ params }: Params) {
 
         <p className="mt-5 flex flex-wrap items-center gap-2 font-body text-sm text-ivory/75">
           <span>By {blog.author}</span>
+          <span aria-hidden="true">/</span>
+          <span>{formatDate(blog.date)}</span>
           <span aria-hidden="true">/</span>
           <span>{blog.readTime}</span>
         </p>

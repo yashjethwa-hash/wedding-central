@@ -1,13 +1,14 @@
 "use client";
 
+import Link from "next/link";
 import { useId, useState } from "react";
 
 const LINKS = [
-  { label: "Plan a Wedding", href: "#" },
-  { label: "Visit a wedding", href: "#" },
-  { label: "Venues", href: "#" },
-  { label: "Playlists", href: "#" },
-  { label: "About", href: "#" },
+  { label: "Plan a Wedding", href: "/blogs" },
+  { label: "Visit a wedding", href: "/blogs" },
+  { label: "Venues", href: "/blogs" },
+  { label: "Playlists", href: "/blogs" },
+  { label: "About", href: "/blogs" },
 ];
 
 /** Minimal stroked chevron. Sized in em so it tracks the link's own type size. */
@@ -115,7 +116,7 @@ export default function FooterSection() {
           <ul className="mt-6 flex flex-col gap-1">
             {LINKS.map((link) => (
               <li key={link.label}>
-                <a
+                <Link
                   href={link.href}
                   className="group inline-flex items-center gap-2.5 rounded py-2 font-body text-base text-ivory-dim transition-colors duration-200 hover:text-ivory focus-visible:text-ivory focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ivory md:text-lg"
                 >
@@ -127,7 +128,7 @@ export default function FooterSection() {
                   <span className="transition-transform duration-200 ease-out group-hover:translate-x-1.5 group-focus-visible:translate-x-1.5">
                     <ChevronRight />
                   </span>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

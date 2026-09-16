@@ -16,13 +16,11 @@ type Metric = {
   suffix?: string;
   /** What the figure counts, set small beneath it. */
   label: string;
-  /** Thousands separators only make sense on the large figure. */
-  grouped?: boolean;
 };
 
 const METRICS: Metric[] = [
-  { target: 30000, label: "Indian's Get Married every year", grouped: true },
-  { target: 6, suffix: "M+", label: "Wedding Attendees" },
+  { target: 10, suffix: "M+", label: "Indians Get Married every year" },
+  { target: 50, suffix: "M+", label: "Wedding Attendees" },
   { target: 12, suffix: "K+", label: "Struggle with Wedding decision making" },
 ];
 
@@ -63,12 +61,7 @@ const WAVE_PATH =
 function MetricFigure({ metric, start }: { metric: Metric; start: boolean }) {
   const count = useMotionValue(0);
 
-  // An explicit locale - relying on the runtime's default would risk the server
-  // and the client formatting the same number differently and breaking hydration.
-  const text = useTransform(count, (latest) => {
-    const n = Math.round(latest);
-    return metric.grouped ? n.toLocaleString("en-US") : String(n);
-  });
+  const text = useTransform(count, (latest) => String(Math.round(latest)));
 
   useEffect(() => {
     if (!start) return;

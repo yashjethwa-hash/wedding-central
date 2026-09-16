@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const INTRO =
   "Indian weddings can look very different: a thousand traditions, a million " +
   "stories. And with so much to explore, where do you even begin? From outfits, " +
@@ -58,6 +60,25 @@ const VISITING: Card[] = [
   },
 ];
 
+/** Minimal stroked chevron. Sized in em so it tracks the label's own type size. */
+function ChevronRight() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+      className="h-[0.9em] w-[0.9em] shrink-0"
+    >
+      <path d="M9 6l6 6-6 6" />
+    </svg>
+  );
+}
+
 function Carousel({ title, cards }: { title: string; cards: Card[] }) {
   const headingId = `blog-${title.replace(/[^a-z]+/gi, "-").toLowerCase()}`;
 
@@ -82,17 +103,29 @@ function Carousel({ title, cards }: { title: string; cards: Card[] }) {
         className="no-scrollbar mt-5 flex w-full snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-6 px-6 pb-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ivory md:scroll-px-8 md:gap-6 md:px-8"
       >
         {cards.map((card) => (
-          <article
+          /*
+            The whole card is the link rather than a "read more" inside it, so
+            the target is large on touch and a screen reader announces the card
+            title as the link text.
+          */
+          <Link
             key={card.title}
-            className="group w-[78%] shrink-0 snap-start rounded-2xl border border-white/50 bg-white/70 p-6 shadow-lg shadow-black/15 backdrop-blur-md transition duration-300 ease-out hover:-translate-y-1.5 hover:bg-white/80 hover:shadow-xl hover:shadow-black/25 sm:w-[48%] md:p-7 lg:w-[31%]"
+            href="/blogs"
+            className="group flex w-[78%] shrink-0 snap-start flex-col rounded-2xl border border-white/50 bg-white/70 p-6 shadow-lg shadow-black/15 backdrop-blur-md transition duration-300 ease-out hover:-translate-y-1.5 hover:bg-white/80 hover:shadow-xl hover:shadow-black/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ivory sm:w-[48%] md:p-7 lg:w-[31%]"
           >
             <h4 className="font-serif-display text-xl font-semibold leading-snug text-maroon md:text-2xl">
               {card.title}
             </h4>
-            <p className="mt-3 font-body text-sm leading-relaxed text-maroon-soft md:text-base">
+            <p className="mt-3 flex-1 font-body text-sm leading-relaxed text-maroon-soft md:text-base">
               {card.blurb}
             </p>
-          </article>
+            <p className="mt-5 flex items-center gap-1.5 font-body text-sm font-semibold text-maroon">
+              Read more
+              <span className="transition-transform duration-200 ease-out group-hover:translate-x-1">
+                <ChevronRight />
+              </span>
+            </p>
+          </Link>
         ))}
       </div>
     </section>
