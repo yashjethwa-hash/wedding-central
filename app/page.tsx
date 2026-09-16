@@ -6,6 +6,7 @@ import Preloader from "@/components/Preloader";
 import HeroMetrics from "@/components/HeroMetrics";
 import FloatingBubbles from "@/components/FloatingBubbles";
 import BlogSection from "@/components/BlogSection";
+import FooterSection from "@/components/FooterSection";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -21,20 +22,29 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      <motion.main
-        className="min-h-screen w-full"
+      {/*
+        The reveal moved up onto a wrapper so the footer fades in with
+        everything else while still sitting outside <main>, which is where a
+        footer belongs.
+      */}
+      <motion.div
+        className="w-full"
         initial={{ opacity: 0 }}
         animate={{ opacity: isLoading ? 0 : 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        {/* The counters wait for the preloader, so the reveal catches them mid-tick
-            rather than already finished. */}
-        <HeroMetrics startCounting={!isLoading} />
+        <main className="min-h-screen w-full">
+          {/* The counters wait for the preloader, so the reveal catches them
+              mid-tick rather than already finished. */}
+          <HeroMetrics startCounting={!isLoading} />
 
-        <FloatingBubbles />
+          <FloatingBubbles />
 
-        <BlogSection />
-      </motion.main>
+          <BlogSection />
+        </main>
+
+        <FooterSection />
+      </motion.div>
     </>
   );
 }
