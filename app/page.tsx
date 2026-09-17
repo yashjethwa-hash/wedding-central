@@ -6,6 +6,7 @@ import Preloader from "@/components/Preloader";
 import HeroMetrics from "@/components/HeroMetrics";
 import FloatingBubbles from "@/components/FloatingBubbles";
 import BlogSection from "@/components/BlogSection";
+import InteractiveMap from "@/components/InteractiveMap";
 import FooterSection from "@/components/FooterSection";
 
 export default function Home() {
@@ -41,6 +42,8 @@ export default function Home() {
           <FloatingBubbles />
 
           <BlogSection />
+
+          <InteractiveMap />
         </main>
 
         <FooterSection />
