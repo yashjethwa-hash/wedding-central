@@ -1,7 +1,13 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { blogs, formatDate, type Blog } from "@/data/blogs";
+import {
+  blogs,
+  CATEGORIES,
+  formatDate,
+  type Blog,
+  type BlogCategory,
+} from "@/data/blogs";
 
 export const metadata: Metadata = {
   title: "Wedding Planning & Inspiration | Wedding Central",
@@ -10,9 +16,17 @@ export const metadata: Metadata = {
 };
 
 const INTRO =
-  "Rituals, regional traditions, outfits and budgets, decoded by people who " +
-  "have sat through the whole week. Whether you are planning a shaadi or " +
-  "turning up to one, start here.";
+  "Indian weddings can look very different: a thousand traditions, a million " +
+  "stories. And with so much to explore, where do you even begin? From outfits, " +
+  "rituals, customs, food, music and everything in between, we bring it all " +
+  "together. Whether you are planning a shaadi or attending one, we are here to " +
+  "decode how India celebrates love, one baraat at a time.";
+
+/** Heading shown above each category group. */
+const SECTION_TITLES: Record<BlogCategory, string> = {
+  Planning: "Planning a Wedding?",
+  Attending: "Attending a Wedding?",
+};
 
 /**
  * Newest first, so the featured slot always holds the latest story and the
@@ -20,6 +34,15 @@ const INTRO =
  */
 const sorted = [...blogs].sort((a, b) => b.date.localeCompare(a.date));
 const [featured, ...rest] = sorted;
+
+/**
+ * The groups beneath the featured card. Drawn from `rest` rather than from the
+ * full list, so the featured story is not also printed again in its category.
+ */
+const groups = CATEGORIES.map((category) => ({
+  category,
+  posts: rest.filter((blog) => blog.category === category),
+})).filter((group) => group.posts.length > 0);
 
 /**
  * Sits over the artwork so the panel always reads as an image area rather than
@@ -190,20 +213,24 @@ export default function BlogsPage() {
         <FeaturedCard blog={featured} />
       </div>
 
-      <section aria-labelledby="latest" className="mx-auto mt-16 max-w-6xl md:mt-20">
-        <h2
-          id="latest"
-          className="font-serif-display text-2xl font-medium text-ivory sm:text-3xl"
-        >
-          Latest Stories
-        </h2>
+      <div className="mx-auto mt-16 flex max-w-6xl flex-col gap-16 md:mt-20 md:gap-20">
+        {groups.map(({ category, posts }) => (
+          <section key={category} aria-labelledby={`section-${category}`}>
+            <h2
+              id={`section-${category}`}
+              className="font-serif-display text-2xl font-medium text-ivory sm:text-3xl"
+            >
+              {SECTION_TITLES[category]}
+            </h2>
 
-        <ul className="mt-8 grid list-none grid-cols-1 gap-8 p-0 md:grid-cols-3">
-          {rest.map((blog) => (
-            <PostCard key={blog.slug} blog={blog} />
-          ))}
-        </ul>
-      </section>
+            <ul className="mt-8 grid list-none grid-cols-1 gap-8 p-0 md:grid-cols-3">
+              {posts.map((blog) => (
+                <PostCard key={blog.slug} blog={blog} />
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
     </main>
   );
 }
