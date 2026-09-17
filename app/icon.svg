@@ -1,0 +1,15 @@
+<!--
+  Placeholder favicon: the initials WC, cream on the brand maroon.
+
+  Drawn here rather than exported so there is no binary to keep in sync. Next
+  picks this up automatically from app/icon.svg and emits the <link> tags.
+
+  TODO: swap this for the real mark once it is exported from Canva. Drop the
+  file in as app/icon.png (or keep icon.svg) and delete this note.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" rx="14" fill="#4a0f28"/>
+  <text x="32" y="33" fill="#fef5dc" font-family="Georgia, 'Times New Roman', serif"
+        font-size="30" font-weight="500" text-anchor="middle" dominant-baseline="central"
+        letter-spacing="-1">WC</text>
+</svg>

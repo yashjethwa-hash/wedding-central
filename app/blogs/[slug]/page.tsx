@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { blogs, formatDate, getBlogBySlug } from "@/data/blogs";
+import { OG_IMAGE } from "@/lib/seo";
 
 /** In Next 15 route params arrive as a promise and have to be awaited. */
 type Params = { params: Promise<{ slug: string }> };
@@ -15,11 +16,20 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params;
   const blog = getBlogBySlug(slug);
 
-  if (!blog) return { title: "Not found | Wedding Central" };
+  if (!blog) return { title: "Not found" };
 
+  // Bare titles: the root layout's template appends the site name.
   return {
-    title: `${blog.title} | Wedding Central`,
+    title: blog.title,
     description: blog.excerpt,
+    openGraph: {
+      type: "article",
+      title: blog.title,
+      description: blog.excerpt,
+      authors: [blog.author],
+      publishedTime: blog.date,
+      images: [OG_IMAGE],
+    },
   };
 }
 

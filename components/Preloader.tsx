@@ -117,7 +117,7 @@ export default function Preloader({ onAnimationComplete }: PreloaderProps) {
       style={{
         position: "fixed",
         inset: 0,
-        zIndex: 50,
+        zIndex: 60,
         display: "grid",
         placeItems: "center",
         padding: "2rem",

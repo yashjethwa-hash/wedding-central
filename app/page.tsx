@@ -1,53 +1,24 @@
-"use client";
+import type { Metadata } from "next";
+import { OG_IMAGE } from "@/lib/seo";
+import HomeContent from "@/components/HomeContent";
 
-import { useCallback, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import Preloader from "@/components/Preloader";
-import HeroMetrics from "@/components/HeroMetrics";
-import FloatingBubbles from "@/components/FloatingBubbles";
-import BlogSection from "@/components/BlogSection";
-import InteractiveMap from "@/components/InteractiveMap";
-import FooterSection from "@/components/FooterSection";
+export const metadata: Metadata = {
+  title: "Plan & Discover Weddings Across India",
+  description:
+    "Destination weddings, Mumbai markets, rituals and real planning numbers. Wedding Central decodes how India celebrates love, for everyone planning a shaadi or attending one.",
+  openGraph: {
+    title: "Wedding Central - Plan & Discover Weddings Across India",
+    description:
+      "Destination weddings, Mumbai markets, rituals and real planning numbers, in one place.",
+    images: [OG_IMAGE],
+  },
+};
 
+/*
+  A server component so it can export metadata. Everything interactive, which
+  is to say the preloader handover and every section under it, lives in
+  HomeContent, which is the client half.
+*/
 export default function Home() {
-  const [isLoading, setIsLoading] = useState(true);
-
-  // Stable identity so the preloader's timers are not restarted on re-render.
-  const handleAnimationComplete = useCallback(() => setIsLoading(false), []);
-
-  return (
-    <>
-      <AnimatePresence>
-        {isLoading && (
-          <Preloader key="preloader" onAnimationComplete={handleAnimationComplete} />
-        )}
-      </AnimatePresence>
-
-      {/*
-        The reveal moved up onto a wrapper so the footer fades in with
-        everything else while still sitting outside <main>, which is where a
-        footer belongs.
-      */}
-      <motion.div
-        className="w-full"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: isLoading ? 0 : 1 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-      >
-        <main className="min-h-screen w-full">
-          {/* The counters wait for the preloader, so the reveal catches them
-              mid-tick rather than already finished. */}
-          <HeroMetrics startCounting={!isLoading} />
-
-          <FloatingBubbles />
-
-          <BlogSection />
-
-          <InteractiveMap />
-        </main>
-
-        <FooterSection />
-      </motion.div>
-    </>
-  );
+  return <HomeContent />;
 }

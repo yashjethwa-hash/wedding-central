@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { OG_IMAGE } from "@/lib/seo";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -10,9 +11,15 @@ import {
 } from "@/data/blogs";
 
 export const metadata: Metadata = {
-  title: "Wedding Planning & Inspiration | Wedding Central",
+  title: "Wedding Planning & Inspiration",
   description:
-    "Rituals, regional traditions, outfits and budgets, for everyone planning a shaadi or attending one.",
+    "Rituals, regional traditions, outfits and budgets, decoded for everyone planning an Indian wedding or attending one. Read the Wedding Central stories.",
+  openGraph: {
+    title: "Wedding Planning & Inspiration | Wedding Central",
+    description:
+      "Rituals, regional traditions, outfits and budgets, for everyone planning a shaadi or attending one.",
+    images: [OG_IMAGE],
+  },
 };
 
 const INTRO =
