@@ -8,6 +8,22 @@
  * and the root layout are both server components, so reading these from here
  * keeps them real.
  */
+
+/** Links in the navbar's side drawer. */
+export const DRAWER_LINKS = [
+  { label: "Home", href: "/" },
+  { label: "Planning a Wedding", href: "/planning" },
+  { label: "Visiting a Wedding", href: "/visiting" },
+  { label: "Venues", href: "/venues" },
+  { label: "Playlists", href: "/playlists" },
+];
+
+/**
+ * Footer quick links.
+ *
+ * Kept separate from the drawer so /blogs and /contact stay reachable: the
+ * drawer no longer lists either of them.
+ */
 export const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "Blogs", href: "/blogs" },

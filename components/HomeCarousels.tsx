@@ -79,7 +79,16 @@ function ChevronRight() {
   );
 }
 
-function Carousel({ title, cards }: { title: string; cards: Card[] }) {
+function Carousel({
+  title,
+  href,
+  cards,
+}: {
+  title: string;
+  /** Where the heading routes to. */
+  href: string;
+  cards: Card[];
+}) {
   const headingId = `blog-${title.replace(/[^a-z]+/gi, "-").toLowerCase()}`;
 
   return (
@@ -88,7 +97,17 @@ function Carousel({ title, cards }: { title: string; cards: Card[] }) {
         id={headingId}
         className="px-6 font-serif-display text-2xl font-medium text-ivory sm:text-3xl md:px-8"
       >
-        {title}
+        {/* The heading itself is the link, so the accessible name of the link
+            and the name of the section it opens are the same words. */}
+        <Link
+          href={href}
+          className="group inline-flex items-center gap-2 rounded transition-colors duration-200 hover:text-ivory/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ivory"
+        >
+          {title}
+          <span className="transition-transform duration-200 ease-out group-hover:translate-x-1">
+            <ChevronRight />
+          </span>
+        </Link>
       </h3>
 
       {/*
@@ -132,7 +151,7 @@ function Carousel({ title, cards }: { title: string; cards: Card[] }) {
   );
 }
 
-export default function BlogSection() {
+export default function HomeCarousels() {
   return (
     <section className="relative w-full py-20 md:py-28">
       <div className="mx-auto max-w-3xl px-6 md:px-8">
@@ -142,8 +161,16 @@ export default function BlogSection() {
       </div>
 
       <div className="mt-16 flex w-full flex-col gap-14 md:mt-20 md:gap-16">
-        <Carousel title="Planning a Wedding?" cards={PLANNING} />
-        <Carousel title="Visiting a Wedding?" cards={VISITING} />
+        <Carousel
+          title="Planning a Wedding?"
+          href="/planning"
+          cards={PLANNING}
+        />
+        <Carousel
+          title="Visiting a Wedding?"
+          href="/visiting"
+          cards={VISITING}
+        />
       </div>
     </section>
   );

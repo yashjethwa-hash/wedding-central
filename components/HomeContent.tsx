@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Preloader from "@/components/Preloader";
 import HeroMetrics from "@/components/HeroMetrics";
 import FloatingBubbles from "@/components/FloatingBubbles";
-import BlogSection from "@/components/BlogSection";
+import HomeCarousels from "@/components/HomeCarousels";
 import InteractiveMap from "@/components/InteractiveMap";
 import VinylPlayer from "@/components/VinylPlayer";
 
@@ -41,7 +41,7 @@ export default function HomeContent() {
 
           <FloatingBubbles />
 
-          <BlogSection />
+          <HomeCarousels />
 
           <InteractiveMap />
 
