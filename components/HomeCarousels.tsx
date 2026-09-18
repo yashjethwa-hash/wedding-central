@@ -12,6 +12,14 @@ type Card = {
   title: string;
   /** One supporting line, drawn from the content pillars in the strategy doc. */
   blurb: string;
+  /**
+   * Artwork above the title, from `public/blogs/`.
+   *
+   * Optional on purpose. A card with no file yet falls back to a tinted panel
+   * rather than a gap, so a half-populated rail still lines up. Drop the file
+   * in and set this, and the photograph takes over.
+   */
+  image?: string;
 };
 
 const PLANNING: Card[] = [
@@ -19,6 +27,7 @@ const PLANNING: Card[] = [
     title: "Ritual Deep-Dives",
     blurb:
       "Haldi, Mehendi, Sangeet, Baraat, Pheras and Vidaai, with the symbolism behind each.",
+    image: "/blogs/ritual-deep-dives.jpg",
   },
   {
     title: "Regional Wedding Traditions",
@@ -59,6 +68,35 @@ const VISITING: Card[] = [
       "Sangeet playlists by function, and choosing between a live band and a DJ.",
   },
 ];
+
+/**
+ * Card artwork, or a stand-in for it.
+ *
+ * The placeholder is a tinted panel keyed off the title rather than a grey box,
+ * so a rail that is only partly photographed still reads as designed.
+ */
+function CardArt({ card }: { card: Card }) {
+  return (
+    <div className="relative mb-5 aspect-video w-full overflow-hidden rounded-xl bg-gradient-to-br from-maroon/15 via-maroon/10 to-transparent">
+      {card.image ? (
+        /* eslint-disable-next-line @next/next/no-img-element */
+        <img
+          src={card.image}
+          alt=""
+          loading="lazy"
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+        />
+      ) : (
+        <span
+          aria-hidden="true"
+          className="absolute inset-0 grid place-items-center font-serif-display text-3xl text-maroon/25"
+        >
+          {card.title.charAt(0)}
+        </span>
+      )}
+    </div>
+  );
+}
 
 /** Minimal stroked chevron. Sized in em so it tracks the label's own type size. */
 function ChevronRight() {
@@ -130,8 +168,10 @@ function Carousel({
           <Link
             key={card.title}
             href="/blogs"
-            className="group flex w-[78%] shrink-0 snap-start flex-col rounded-2xl border border-white/50 bg-white/70 p-6 shadow-lg shadow-black/15 backdrop-blur-md transition duration-300 ease-out hover:-translate-y-1.5 hover:bg-white/80 hover:shadow-xl hover:shadow-black/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ivory sm:w-[48%] md:p-7 lg:w-[31%]"
+            className="group flex w-[78%] shrink-0 snap-start flex-col overflow-hidden rounded-2xl border border-white/50 bg-white/70 p-6 shadow-lg shadow-black/15 backdrop-blur-md transition duration-300 ease-out hover:-translate-y-1.5 hover:bg-white/80 hover:shadow-xl hover:shadow-black/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ivory sm:w-[48%] md:p-7 lg:w-[31%]"
           >
+            <CardArt card={card} />
+
             <h4 className="font-serif-display text-xl font-semibold leading-snug text-maroon md:text-2xl">
               {card.title}
             </h4>
