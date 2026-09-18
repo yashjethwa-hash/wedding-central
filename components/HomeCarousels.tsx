@@ -1,94 +1,28 @@
 import Link from "next/link";
+import { BlogThumb } from "@/components/PostCard";
+import { blogs, formatDate, type Blog, type BlogCategory } from "@/data/blogs";
 
 const INTRO =
   "Indian weddings can look very different: a thousand traditions, a million " +
   "stories. And with so much to explore, where do you even begin? From outfits, " +
   "rituals, customs, food, music and everything in between, we bring it all " +
   "together. Whether you are planning a shaadi or attending one, we are here to " +
-  "decode how India celebrates love, one baraat at a time. Explore the wedding " +
-  "traditions across India and discover the stories behind the celebrations.";
+  "decode how India celebrates love, one baraat at a time.";
 
-type Card = {
-  title: string;
-  /** One supporting line, drawn from the content pillars in the strategy doc. */
-  blurb: string;
-  /**
-   * Artwork above the title, from `public/blogs/`.
-   *
-   * Optional on purpose. A card with no file simply has no art block, so a
-   * partly photographed rail still looks deliberate. Drop the file in and set
-   * this, and the picture appears above that card's title.
-   */
-  image?: string;
-};
+/** How many stories each rail shows. */
+const PER_RAIL = 5;
 
-const PLANNING: Card[] = [
-  {
-    title: "Ritual Deep-Dives",
-    blurb:
-      "Haldi, Mehendi, Sangeet, Baraat, Pheras and Vidaai, with the symbolism behind each.",
-    image: "/blogs/ritual-deep-dives.jpg",
-  },
-  {
-    title: "Regional Wedding Traditions",
-    blurb:
-      "Bengali, Punjabi, Marwari, Tamil, Gujarati, Malayali, Kashmiri and Assamese ceremonies.",
-  },
-  {
-    title: "Budget Breakdowns",
-    blurb:
-      "What a 5 lakh, a 50 lakh and a 5 crore wedding actually cover, line by line.",
-  },
-  {
-    title: "Planning Tools & Timelines",
-    blurb:
-      "Budgeting frameworks, vendor checklists and function timeline templates.",
-  },
+const RAILS: { title: string; href: string; category: BlogCategory }[] = [
+  { title: "Planning a Wedding?", href: "/planning", category: "Planning" },
+  { title: "Visiting a Wedding?", href: "/visiting", category: "Attending" },
 ];
 
-const VISITING: Card[] = [
-  {
-    title: "Guest Etiquette & Gifting",
-    blurb:
-      "What to give, what to spend and when to arrive, by function and by region.",
-  },
-  {
-    title: "What to Wear?",
-    blurb:
-      "Daytime and evening dress codes, and how they shift across the week.",
-  },
-  {
-    title: "Understanding the Pheras",
-    blurb:
-      "What the seven rounds mean, and the vow that is spoken at each one.",
-  },
-  {
-    title: "Music & Playlists",
-    blurb:
-      "Sangeet playlists by function, and choosing between a live band and a DJ.",
-  },
-];
-
-/**
- * Card artwork.
- *
- * Rendered only where a file exists. A card without one starts straight at its
- * title rather than showing a stand-in: the rail stretches its cards to a
- * common height anyway, so a text-only card reads as a deliberate variation
- * instead of a hole.
- */
-function CardArt({ src }: { src: string }) {
-  return (
-    <div className="relative mb-5 aspect-video w-full overflow-hidden rounded-xl">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={src}
-        alt=""
-        loading="lazy"
-        className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-      />
-    </div>
-  );
+/** Newest first, so a new story surfaces on the homepage without being placed. */
+function railFor(category: BlogCategory) {
+  return blogs
+    .filter((blog) => blog.category === category)
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .slice(0, PER_RAIL);
 }
 
 /** Minimal stroked chevron. Sized in em so it tracks the label's own type size. */
@@ -110,17 +44,56 @@ function ChevronRight() {
   );
 }
 
-function Carousel({
+function StoryCard({ blog }: { blog: Blog }) {
+  return (
+    <li className="w-[80%] shrink-0 snap-start sm:w-[46%] lg:w-[30%]">
+      {/*
+        The whole card is the link rather than a "read more" inside it, so the
+        target is large on touch and a screen reader announces the title as the
+        link text. overflow-hidden is what lets the artwork run to the rounded
+        edge and scale on hover without spilling past it.
+      */}
+      <Link
+        href={`/blogs/${blog.slug}`}
+        className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/20 bg-white/10 shadow-lg shadow-black/25 backdrop-blur-md transition duration-300 ease-out hover:-translate-y-1.5 hover:border-white/40 hover:bg-white/15 hover:shadow-2xl hover:shadow-black/35 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ivory"
+      >
+        {/* Full bleed: the artwork carries no border and no inset, so it meets
+            the card's edges on three sides. */}
+        <div className="relative aspect-video w-full">
+          <BlogThumb blog={blog} sizes="(min-width: 1024px) 30vw, (min-width: 640px) 46vw, 80vw" />
+        </div>
+
+        <div className="flex flex-1 flex-col p-6">
+          <h4 className="font-serif-display text-xl leading-snug font-semibold text-ivory md:text-2xl">
+            {blog.title}
+          </h4>
+
+          <p className="mt-3 flex-1 font-body text-sm leading-relaxed text-ivory/80">
+            {blog.excerpt}
+          </p>
+
+          <p className="mt-6 flex flex-wrap items-center gap-2 font-body text-xs tracking-wide text-ivory/65">
+            <span>{formatDate(blog.date)}</span>
+            <span aria-hidden="true">/</span>
+            <span>{blog.readTime}</span>
+          </p>
+        </div>
+      </Link>
+    </li>
+  );
+}
+
+function Rail({
   title,
   href,
-  cards,
+  category,
 }: {
   title: string;
-  /** Where the heading routes to. */
   href: string;
-  cards: Card[];
+  category: BlogCategory;
 }) {
-  const headingId = `blog-${title.replace(/[^a-z]+/gi, "-").toLowerCase()}`;
+  const headingId = `rail-${category.toLowerCase()}`;
+  const stories = railFor(category);
 
   return (
     <section className="w-full" aria-labelledby={headingId}>
@@ -142,44 +115,20 @@ function Carousel({
       </h3>
 
       {/*
-        A focusable scroll region, so the carousel can be reached and driven
-        from the keyboard as well as by swiping. `scroll-px` keeps a snapped
-        card clear of the gutter instead of flush against it.
+        A focusable scroll region, so the rail can be reached and driven from
+        the keyboard as well as by swiping. `scroll-px` keeps a snapped card
+        clear of the gutter instead of flush against it.
       */}
-      <div
+      <ul
         role="region"
         aria-labelledby={headingId}
         tabIndex={0}
-        className="no-scrollbar mt-5 flex w-full snap-x snap-mandatory items-stretch gap-4 overflow-x-auto scroll-px-6 px-6 pb-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ivory md:scroll-px-8 md:gap-6 md:px-8"
+        className="no-scrollbar mt-5 flex w-full list-none snap-x snap-mandatory items-stretch gap-4 overflow-x-auto scroll-px-6 px-6 pb-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ivory md:gap-6 md:scroll-px-8 md:px-8"
       >
-        {cards.map((card) => (
-          /*
-            The whole card is the link rather than a "read more" inside it, so
-            the target is large on touch and a screen reader announces the card
-            title as the link text.
-          */
-          <Link
-            key={card.title}
-            href="/blogs"
-            className="group flex w-[78%] shrink-0 snap-start flex-col overflow-hidden rounded-2xl border border-white/50 bg-white/70 p-6 shadow-lg shadow-black/15 backdrop-blur-md transition duration-300 ease-out hover:-translate-y-1.5 hover:bg-white/80 hover:shadow-xl hover:shadow-black/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ivory sm:w-[48%] md:p-7 lg:w-[31%]"
-          >
-            {card.image && <CardArt src={card.image} />}
-
-            <h4 className="font-serif-display text-xl font-semibold leading-snug text-maroon md:text-2xl">
-              {card.title}
-            </h4>
-            <p className="mt-3 flex-1 font-body text-sm leading-relaxed text-maroon-soft md:text-base">
-              {card.blurb}
-            </p>
-            <p className="mt-5 flex items-center gap-1.5 font-body text-sm font-semibold text-maroon">
-              Read more
-              <span className="transition-transform duration-200 ease-out group-hover:translate-x-1">
-                <ChevronRight />
-              </span>
-            </p>
-          </Link>
+        {stories.map((blog) => (
+          <StoryCard key={blog.slug} blog={blog} />
         ))}
-      </div>
+      </ul>
     </section>
   );
 }
@@ -194,16 +143,9 @@ export default function HomeCarousels() {
       </div>
 
       <div className="mt-16 flex w-full flex-col gap-14 md:mt-20 md:gap-16">
-        <Carousel
-          title="Planning a Wedding?"
-          href="/planning"
-          cards={PLANNING}
-        />
-        <Carousel
-          title="Visiting a Wedding?"
-          href="/visiting"
-          cards={VISITING}
-        />
+        {RAILS.map((rail) => (
+          <Rail key={rail.category} {...rail} />
+        ))}
       </div>
     </section>
   );

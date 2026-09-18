@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { OG_IMAGE } from "@/lib/seo";
-import PostCard, { CategoryPill, Scrim } from "@/components/PostCard";
+import PostCard, { BlogThumb, CategoryPill } from "@/components/PostCard";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -63,26 +63,20 @@ function FeaturedCard({ blog }: { blog: Blog }) {
       className="group grid overflow-hidden rounded-xl border border-white/25 bg-white/10 shadow-2xl shadow-black/30 backdrop-blur-xl transition duration-300 ease-out hover:border-white/40 hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ivory md:grid-cols-5"
     >
       {/* Artwork, three of five columns, which is the 60 percent share. */}
-      <div className="relative aspect-[16/10] md:col-span-3 md:aspect-auto md:min-h-[26rem]">
-        <Image
-          src={blog.image}
-          alt=""
-          fill
-          priority
+      <div className="relative aspect-[16/10] overflow-hidden md:col-span-3 md:aspect-auto md:min-h-[26rem]">
+        <BlogThumb
+          blog={blog}
           sizes="(min-width: 768px) 60vw, 100vw"
-          className="object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+          priority
+          pillTone="light"
         />
-        <Scrim />
       </div>
 
       {/* Copy, the remaining two columns. */}
       <div className="flex flex-col justify-center gap-5 p-7 md:col-span-2 md:p-10">
-        <div className="flex flex-wrap items-center gap-3">
-          <CategoryPill category={blog.category} />
-          <span className="font-body text-xs tracking-[0.12em] text-ivory/70 uppercase">
-            Featured
-          </span>
-        </div>
+        <p className="font-body text-xs font-semibold tracking-[0.18em] text-ivory/70 uppercase">
+          Featured story
+        </p>
 
         <h2 className="font-serif-display text-3xl leading-tight font-medium text-ivory lg:text-4xl">
           {blog.title}

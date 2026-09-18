@@ -8,8 +8,14 @@ export type Blog = {
   readTime: string;
   /** ISO date, YYYY-MM-DD. Rendered through formatDate so it never varies by locale. */
   date: string;
-  /** Card and hero artwork. Placeholder art for now, one per post once shot. */
-  image: string;
+  /**
+   * Card and hero artwork, from `public/blogs/`, named after the slug.
+   *
+   * Optional: a post with no photograph yet renders a placeholder panel
+   * instead, so a part-photographed set still looks deliberate. Drop
+   * `public/blogs/<slug>.jpg` in and set this to switch that card over.
+   */
+  image?: string;
   excerpt: string;
   /**
    * Article body as an HTML string.
@@ -21,12 +27,6 @@ export type Blog = {
    */
   content: string;
 };
-
-/**
- * Stand-in artwork until per-post photography lands. Swapping a post's art is
- * then a one-line change on that post rather than a change to the components.
- */
-const PLACEHOLDER_IMAGE = "/bg-pattern.jpg";
 
 const MONTHS = [
   "January",
@@ -60,7 +60,6 @@ export const blogs: Blog[] = [
     author: "Bushra",
     readTime: "5 min read",
     date: "2026-08-28",
-    image: PLACEHOLDER_IMAGE,
     excerpt:
       "Your photographer is the only vendor whose work you will still be looking at in thirty years. Here is how to brief them properly.",
     content: `
@@ -88,12 +87,12 @@ export const blogs: Blog[] = [
   },
   {
     slug: "unwritten-rules-of-attending-an-indian-wedding",
+    image: "/blogs/unwritten-rules-of-attending-an-indian-wedding.jpg",
     title: "The Unwritten Rules of Attending an Indian Wedding",
     category: "Attending",
     author: "Bushra",
     readTime: "4 min read",
     date: "2026-08-14",
-    image: PLACEHOLDER_IMAGE,
     excerpt:
       "Nobody hands you a rulebook with the invitation. Here is what everyone else seems to already know.",
     content: `
@@ -127,7 +126,6 @@ export const blogs: Blog[] = [
     author: "Sanah",
     readTime: "5 min read",
     date: "2026-07-30",
-    image: PLACEHOLDER_IMAGE,
     excerpt:
       "Social media rebuilt how India plans weddings, from vendor discovery to which rituals get revived. That is not all bad.",
     content: `
@@ -160,7 +158,6 @@ export const blogs: Blog[] = [
     author: "Nalin",
     readTime: "6 min read",
     date: "2026-07-11",
-    image: PLACEHOLDER_IMAGE,
     excerpt:
       "What to wear, across every function, without losing the ability to sit down, eat, or dance.",
     content: `
@@ -194,7 +191,6 @@ export const blogs: Blog[] = [
     author: "Parnika",
     readTime: "6 min read",
     date: "2026-06-24",
-    image: PLACEHOLDER_IMAGE,
     excerpt:
       "A smaller budget is a design constraint, not a compromise. Where the money actually goes, and where it does not need to.",
     content: `
@@ -222,6 +218,166 @@ export const blogs: Blog[] = [
 
       <h2>Where not to save</h2>
       <p>Protect the photographer, the food, and the sound. Those are the three things guests actually remember, and each is very difficult to fix afterwards. Everything else is negotiable.</p>
+    `,
+  },
+  {
+    slug: "bride-vanity-diaries",
+    title: "The Bride Vanity Diaries",
+    category: "Planning",
+    author: "Wedding Central",
+    readTime: "4 min read",
+    date: "2026-09-12",
+    excerpt:
+      "Somewhere between choosing your lehenga and arguing about the guest list, someone will mention that you should \"start your skin prep now.\" Panic sets in.",
+    content: `
+      <p>Somewhere between choosing your lehenga and arguing about the guest list, someone will mention that you should "start your skin prep now." Panic sets in. What does that even mean?</p>
+      <p>Do you need seventeen serums? Is your face supposed to have "THE" bridal glow already? Take a breath.</p>
+      <p>Bridal glow is not a miracle that happens the night before your sangeet. It is a slow, fairly boring, extremely effective routine that starts months in advance and gets calmer as the wedding gets closer. Think of it less like a sprint and more like training for a marathon you didn't sign up for but will absolutely finish looking radiant.</p>
+      <p>Good Indian wedding planning always leaves room for this part of the process, right alongside the venue and the outfits. Here is the full plan, skin, hair, and vanity box included.</p>
+      <h2>Six Months Before: Get Your Skin's Act Together</h2>
+      <p>This is the "handle the real stuff" phase, before your inbox fills up with catering package quotes. If you have acne scars, stubborn pigmentation, or fine lines bothering you, this is when a dermatologist visit will actually make a difference. Treatments like microneedling or PRP need multiple sittings spaced weeks apart, so waiting until two months before the d-day means starting a race you cannot finish in time.</p>
+      <p>While you're at it, build a simple daily routine. A gentle cleanser, a treatment serum such as niacinamide, a moisturizer that suits your skin, and sunscreen every single morning. That's it.</p>
+      <p>If laser hair removal is on your list, start now too because it works in cycles, and your wedding date means nothing to it.</p>
+      <h2>Three Months Before: Add Some Sparkle</h2>
+      <p>Your basics are running on autopilot, so now you can layer in the fun stuff. A vitamin C serum in the morning helps with dullness and dark spots, and a mild exfoliating acid once or twice a week keeps texture in check without overdoing it. Book yourself a trial facial.</p>
+      <p>A hydrating one works well as a first test. You want to know how your skin behaves under a professional's hands well before the actual event, not the week of. This is also a nice time to bring in some Indian wedding traditions that actually work.</p>
+      <p>A weekly warm oil massage for your hair, using ingredients your grandmother would approve of, does wonders for scalp health and shine before any heat styling begins. And a homemade or store-bought ubtan once a week keeps your body skin smooth and even-toned without any drama.</p>
+      <h2>One Month Before: Freeze Everything New</h2>
+      <p>This is peak "why fix what isn't broken" energy. No new products. No skincare hack you saw at 1 a.m.</p>
+      <p>on social media and suddenly trust with your face. Your skin does not want surprises this close to the wedding. If you need any extractions done, get them out of the way now.</p>
+      <p>Skin needs about two to three weeks to fully calm down afterward, and you do not want that timeline clashing with your</p>
+      <p>haldi</p>
+      <p>. Hydration becomes the main character here. Hyaluronic acid, ceramides, and actual water- the kind you drink, not just apply. Aim for two to three liters a day if you can manage it.</p>
+      <p>Your skin barrier will thank you quietly but persistently.</p>
+      <h2>Final Week: Less is Better</h2>
+      <p>This is not the week for ambition. Book one gentle, hydrating facial and nothing more adventurous. No deep peels, no aggressive extractions, nothing that risks leaving your face looking like it went through something.</p>
+      <p>Stop retinol and strong acids five to seven days before the wedding so your skin stays smooth and cooperative for makeup, not flaky and defensive. Finish any threading, waxing, or touch-ups five to seven days out as well, giving any redness enough time to disappear quietly before the cameras start rolling.</p>
+      <h2>The Vanity Box Basics Nobody Tells You About</h2>
+      <p>Skin and hair aside, your actual wedding day vanity kit deserves a little planning too. Keep a gentle, non-stripping cleanser for washing your face between events, and a proper cleansing balm for melting away heavy, waterproof makeup at the end of a long day. A lightweight, fast-absorbing moisturizer matters more than people admit, since it needs to sit nicely under both sunscreen and layers of bridal makeup without turning greasy or patchy.</p>
+      <p>And if the whole process starts feeling overwhelming, a calming pillow mist or a stress relief oil at night isn't indulgent; it's basic maintenance. Wedding planning is exhausting, and sleep is doing more for your glow than any serum ever will.</p>
+      <h2>The Actual Takeaway</h2>
+      <p>Nobody's skin transforms overnight, no matter what that instagram reel promises. What actually works is unglamorous consistency, started early and eased off gently as the big day approaches. Build the routine, trust the timeline, and resist the urge to try something new the week of.</p>
+      <p>Your skin, your hair, and your makeup artist will all thank you for keeping things simple.</p>
+    `,
+  },
+  {
+    slug: "experiential-games-in-weddings",
+    title: "Experiential Games in Weddings",
+    category: "Planning",
+    author: "Wedding Central",
+    readTime: "3 min read",
+    date: "2026-09-08",
+    excerpt:
+      "A wedding is no longer just about beautiful decorations, a grand entrance, and a dance floor filled with music. Today, couples are looking for ways to make their celebrations more personal, immersive, and memorable.",
+    content: `
+      <p>A wedding is no longer just about beautiful decorations, a grand entrance, and a dance floor filled with music. Today, couples are looking for ways to make their celebrations more personal, immersive, and memorable. This is where experiential wedding games come in.</p>
+      <p>Forget the kiddish games and predictable activities. Modern wedding games are about creating moments that bring people together, spark conversations, and turn wedding guests into active participants in the celebration. </p>
+      <h2>What Are Experiential Wedding Games?</h2>
+      <p>Experiential games are thoughtfully designed activities that go beyond entertainment. They encourage guests to explore, connect, create, and participate in the wedding atmosphere. Instead of simply watching the celebrations, guests become part of the story.</p>
+      <p>From interactive installations and personalised challenges to cultural experiences and creative guest activities, these games can be designed to complement the wedding's theme, venue, and personality of the couple. The goal is simple: create an experience guests will remember long after the wedding ends.</p>
+      <h2>1. The Couple's Story: An Interactive Wedding Hunt</h2>
+      <p>Why should wedding games be limited to guessing the bride's favourite colour or competing in noisy challenges? An interactive wedding hunt can be built around the couple's actual journey. Guests can discover clues about their first meeting, favourite travel destinations, shared memories, or important milestones.</p>
+      <p>Imagine guests exploring different corners of the venue, scanning QR codes, answering interesting questions, or discovering hidden stories about the couple. This transforms the wedding into a personalised experience while encouraging guests from different friend groups and families to interact. </p>
+      <h2>2. Immersive Cultural Experiences</h2>
+      <p>Indian weddings are rich in traditions, regional customs, music, food, and storytelling. Experiential games offer a modern way to celebrate this cultural diversity. A wedding inspired by Rajasthan could feature a heritage-inspired discovery trail, while a Maharashtrian wedding could introduce guests to traditional elements through interactive storytelling and creative challenges.</p>
+      <p>These experiences should feel authentic rather than staged. The idea is to make culture accessible, engaging, and enjoyable for guests of all ages and backgrounds.</p>
+      <h2>3. Creative Stations That Guests Actually Enjoy</h2>
+      <p>Not everyone wants to dance on stage or participate in loud group games. Some guests prefer experiences that allow them to express themselves creatively. Personalised perfume-making, custom postcard writing, live illustration, collaborative artwork, and memory-wall installations can add an interactive element to the wedding.</p>
+      <p>For example, guests could create a small artwork inspired by the couple and contribute it to a collective installation. The final piece becomes more than wedding decor, it becomes a visual memory of everyone who attended. </p>
+      <h2>4. Digital Experiences for Modern Weddings</h2>
+      <p>Technology can add another layer of interaction without taking away from the elegance of the celebration. Couples can introduce digital guestbooks, interactive wedding timelines, personalised photo challenges, and venue-based discovery experiences. Guests can contribute messages, photographs, or memories that the couple can revisit after the wedding.</p>
+      <p>The key is to ensure that technology enhances the occasion rather than making guests feel like they are attending a corporate event. A simple, well-designed experience often works better than an overly complicated setup.</p>
+      <h2>5. Designing Games Around the Wedding Vibe</h2>
+      <p>The most successful experiential games are those that feel like a natural part of the wedding. A luxury palace wedding may benefit from refined, heritage-inspired activities, while a destination beach wedding could incorporate relaxed, location-based experiences. The choice of activity should consider the guest list, venue, cultural setting, and overall mood of the celebration.</p>
+      <p>Games should be optional, inclusive, and easy to understand, allowing guests to participate at their own pace.</p>
+      <h2>The Future of Wedding Entertainment</h2>
+      <p>Experiential games are changing how couples think about wedding entertainment. They bring together storytelling, design, culture, technology, and human connection to create celebrations that feel more personal. A wedding is not remembered only for how it looked.</p>
+      <p>It is remembered for how it made people feel, the conversations they had, and the moments they shared. At Wedding Central, discover ideas that turn your wedding from a celebration into an experience worth remembering.</p>
+    `,
+  },
+  {
+    slug: "decoding-the-wedding-dress-code",
+    title: "Decoding the Dress Code",
+    category: "Attending",
+    author: "Wedding Central",
+    readTime: "3 min read",
+    date: "2026-09-04",
+    excerpt:
+      "The wedding invitation has arrived, the dates are blocked, and the age-old question remains: what should you wear? Indian weddings are multi-day affairs, with each function demanding a distinct aesthetic.",
+    content: `
+      <p>The wedding invitation has arrived, the dates are blocked, and the age-old question remains: what should you wear? Indian weddings are multi-day affairs, with each function demanding a distinct aesthetic. The goal of any guest is to look impeccable, feel comfortable, and ensure the couple remains the focal point of the celebrations.</p>
+      <p>Here is a practical breakdown of how to approach the three main events.</p>
+      <h2>The Haldi: Daytime Comfort Meets Style</h2>
+      <p>The Haldi is traditionally an intimate, daytime event heavily involving turmeric paste, water, and outdoor settings. Breathability is your biggest priority.</p>
+      <ul><li>For Women: Opt for lightweight fabrics like cotton, georgette, or chiffon. Yellow, mustard, or floral prints are standard, but soft greens and peaches work equally well. Avoid heavy embroidery that will weigh you down in the daytime heat.</li><li>For Men: This is where simplicity is highly effective. A classic Chikankari kurta in soft pastel shades is a foolproof choice. It provides an effortlessly stylish look, breathes beautifully during humid daytime outdoor events, and photographs exceptionally well without looking overdone. Pair it with comfortable pyjamas or straight-cut trousers.</li></ul>
+      <h2>The Sangeet: Glamour and Mobility</h2>
+      <p>The Sangeet is a high-energy evening centered around music, performances, and hours on the dance floor. Your outfit needs to accommodate constant movement.</p>
+      <ul><li>For Women: Pre-draped sarees, sharply tailored fusion wear, or lehengas with lighter borders are ideal. You want the visual impact of evening wear without the restriction of a heavy skirt. Avoid anything with long, trailing dupattas that require constant adjustment.</li><li>For Men: Elevate your look with structured layers. A sharp Nehru jacket or an Indo-Western tailored jacket over a solid silk kurta strikes the right balance. Stick to deeper tones like navy blue, emerald green, or deep maroon. Leave the heavily embellished, floor-length sherwanis for the groom.</li></ul>
+      <h2>The Reception: Formal and Refined</h2>
+      <p>The Reception is the grand finale and usually demands the most formal attire.</p>
+      <ul><li>For Women: This is the time for elegant silk sarees, sophisticated floor-length gowns, or intricately worked Anarkalis. Jewel tones work best under banquet lighting. Statement jewelry is appropriate, but avoid wearing full bridal-style sets.</li><li>For Men: A well-tailored dark suit or tuxedo is the standard for modern receptions. Ensure the fit is precise, especially around the shoulders and the trouser break. If you prefer traditional wear, a structured Bandhgala suit is an exceptionally sharp alternative.</li></ul>
+      <h2>Footwear and Finishing Touches</h2>
+      <p>Your choice of footwear can define your comfort level at these events. For the Haldi, which is often outdoors on grass, avoid stiletto heels. Women should opt for elegant flats or embellished juttis, while men can wear simple leather sandals.</p>
+      <p>The Sangeet requires dancing shoes, so men should choose well-broken-in brogues or loafers, and women should stick to block heels or wedges. For the Reception, formal oxfords for men and classic heels for women complete the refined aesthetic.</p>
+    `,
+  },
+  {
+    slug: "modern-guest-gifting-guide",
+    title: "The Modern Guest Gifting Guide",
+    category: "Attending",
+    author: "Wedding Central",
+    readTime: "3 min read",
+    date: "2026-08-30",
+    excerpt:
+      "The traditional envelope of cash will always have its place at weddings. However, modern couples are increasingly practical.",
+    content: `
+      <p>The traditional envelope of cash will always have its place at weddings. However, modern couples are increasingly practical. Many are already living independently, meaning they do not necessarily need another silver bowl, decorative clock, or a set of dinner plates.</p>
+      <p>If you want to give a gift that truly adds value to their new life together, it requires looking past the conventional registry.</p>
+      <h2>Prioritize Experiences Over Objects</h2>
+      <p>After months of stressful wedding planning and non-stop socializing, the best gift you can offer a newlywed couple is a chance to relax.</p>
+      <ul><li>Weekend Getaways: A voucher for a boutique hotel or a premium Airbnb gives the couple a much-needed escape to decompress.</li><li>Dining and Wellness: A reservation at an exclusive restaurant or a couple's spa day provides a memorable experience without adding physical clutter to their home.</li></ul>
+      <h2>Invest in Everyday Convenience</h2>
+      <p>Think about the friction points in daily life and how your gift can solve them. Modern couples value time and convenience above almost everything else.</p>
+      <ul><li>Subscription Services: Instead of a physical item, consider gifting annual subscriptions that make life easier. For couples who love ordering in, a premium food delivery membership like Swiggy One is an incredibly practical, highly appreciated gift that they will actually use every single week.</li><li>Smart Home Upgrades: Devices that automate daily tasks, from robotic vacuums to smart lighting systems, are highly sought after. They offer immediate, tangible improvements to their daily routine.</li></ul>
+      <h2>The Power of Group Gifting</h2>
+      <p>If the couple has their eye on a high-ticket item, do not attempt to buy a cheaper, lower-quality alternative on your own. Instead, pool your resources with a group of friends.</p>
+      <ul><li>Major Appliances: Contributing to a high-end espresso machine, an air purifier, or a premium mattress is far more useful than gifting a standalone toaster.</li><li>Honeymoon Funds: Many couples now prefer contributions to their honeymoon. A collective gift that covers their flights or a special excursion during their trip is always welcome.</li></ul>
+      <h2>Personalized and Custom Offerings</h2>
+      <p>If you prefer giving something tangible, customization elevates a standard gift into a keepsake. Monogrammed leather luggage tags or passport holders for their honeymoon show careful thought. Custom illustrations of the venue or a high-quality framing of their wedding invitation are unique pieces they can display in their home.</p>
+      <p>These touches demonstrate that you invested time and planning into their gift.</p>
+      <h2>Guidelines for Getting It Right</h2>
+      <p>If you do choose to give a physical item, ensure you know their aesthetic preferences. If you are unsure, always include a gift receipt. Finally, whether you are giving an experience, a digital subscription, or cash, always include a handwritten note.</p>
+      <p>It adds a necessary personal touch to even the most practical gifts.</p>
+    `,
+  },
+  {
+    slug: "navigating-the-shaadi-buffet",
+    title: "Navigating the Shaadi Buffet",
+    category: "Attending",
+    author: "Wedding Central",
+    readTime: "3 min read",
+    date: "2026-08-25",
+    excerpt:
+      "The Indian wedding buffet is an overwhelming landscape of culinary delights, often stretching across massive lawns with dozens of different cuisines. Approaching it without a solid plan usually results in a chaotic plate of conflicting flavors and feeling uncomfortably full within the first twenty minutes.",
+    content: `
+      <p>The Indian wedding buffet is an overwhelming landscape of culinary delights, often stretching across massive lawns with dozens of different cuisines. Approaching it without a solid plan usually results in a chaotic plate of conflicting flavors and feeling uncomfortably full within the first twenty minutes. Conquering the buffet requires strategy, pacing, and prioritization.</p>
+      <h2>Step One: Scout the Perimeter</h2>
+      <p>Never pick up a plate immediately upon entering the dining area. Take a complete lap of the entire setup first.</p>
+      <ul><li>Mental Mapping: Identify the high-value items, note where the live counters are located, and decide what you absolutely must try.</li><li>Filtering: Mentally filter out the filler items. Skip the generic dinner rolls, plain rice, or standard salads that you can eat on any regular day. Save your appetite for the specialty dishes.</li></ul>
+      <h2>Step Two: Master the Live Counters</h2>
+      <p>Live counters are the undisputed highlight of the wedding feast, offering the freshest food.</p>
+      <ul><li>Timing is Everything: Head to the popular counters, like chaat, pasta, or dim sum, early in the evening before the main rush hits.</li><li>Portion Control: Explicitly ask the chefs for smaller, tasting-sized portions. This allows you to sample a wider variety of items without hitting your capacity too early.</li></ul>
+      <h2>Step Three: The Beverage Strategy</h2>
+      <p>While the majority of guests will crowd around the mocktail bar or the heavy, sugary sherbet counters, look for the traditional setups.</p>
+      <ul><li>The Palate Cleanser: Find the dedicated tea vendor. A strong, freshly brewed cup of chai is the perfect palate cleanser halfway through the evening. It cuts through the richness of the heavy appetizers, settles the stomach, and provides a clean reset before you move on to the main course.</li></ul>
+      <h2>Step Four: Strategic Plating for the Main Course</h2>
+      <p>Do not treat your plate like a mixing bowl.</p>
+      <ul><li>Cuisine Isolation: Keep different cuisines on separate plates or eat them in distinct rounds. Mixing a rich paneer makhani with a delicate Thai green curry ruins the flavor profile of both.</li><li>Temperature Matters: Only plate hot food when you are ready to eat it. Letting carefully prepared dishes go cold while you stand in another line defeats the purpose.</li></ul>
+      <h2>Step Five: Managing the Flow and Timing</h2>
+      <p>Understanding the rhythm of a wedding buffet is crucial. The food stations will see a massive surge of crowds immediately after the couple completes their main stage photographs. To avoid the longest lines, aim to eat in waves.</p>
+      <p>Have your appetizers early, take a break during the peak dinner rush to socialize, and return for the main course once the crowd begins to disperse toward the dessert stations.</p>
+      <h2>Step Six: The Dessert Station Finale</h2>
+      <p>Always operate at eighty percent capacity during the main course to leave room for dessert. Bypass the standard blocks of ice cream and head straight for the items being made on the spot. Hot jalebis straight from the oil or freshly steamed malpua offer a significantly better culinary experience.</p>
     `,
   },
 ];
