@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { blogs, formatDate, getBlogBySlug } from "@/data/blogs";
@@ -78,7 +79,24 @@ export default async function BlogPage({ params }: Params) {
         turning the blur up lifts the body copy well clear of the pattern while
         the background still shows through.
       */}
-      <article className="mx-auto mt-8 max-w-3xl rounded-3xl border border-white/15 bg-black/30 p-7 shadow-2xl shadow-black/30 backdrop-blur-2xl sm:p-10 md:p-14">
+      <article className="mx-auto mt-8 max-w-3xl overflow-hidden rounded-3xl border border-white/15 bg-black/30 shadow-2xl shadow-black/30 backdrop-blur-2xl">
+        {/* The same photograph the card on the homepage and the hub use, full
+            bleed at the top of the article rather than inset, so the panel
+            reads as one object. Only drawn where a file exists. */}
+        {blog.image && (
+          <div className="relative aspect-[16/7] w-full">
+            <Image
+              src={blog.image}
+              alt=""
+              fill
+              priority
+              sizes="(min-width: 768px) 48rem, 100vw"
+              className="object-cover"
+            />
+          </div>
+        )}
+
+        <div className="p-7 sm:p-10 md:p-14">
         <p className="font-body text-xs font-semibold tracking-[0.18em] text-ivory/70 uppercase">
           {blog.category}
         </p>
@@ -106,6 +124,7 @@ export default async function BlogPage({ params }: Params) {
           className="mt-10 font-body text-base leading-[1.9] text-ivory/90 [&_h2]:mt-12 [&_h2]:mb-4 [&_h2]:font-serif-display [&_h2]:text-2xl [&_h2]:font-medium [&_h2]:text-ivory [&_li]:mb-2 [&_p]:mb-6 [&_strong]:font-semibold [&_strong]:text-ivory [&_ul]:mb-6 [&_ul]:list-disc [&_ul]:pl-6 md:text-lg"
           dangerouslySetInnerHTML={{ __html: blog.content }}
         />
+        </div>
       </article>
 
       <div className="mx-auto mt-10 max-w-3xl">

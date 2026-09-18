@@ -170,9 +170,28 @@ export default function HeroMetrics({
           over it. The image runs flush to the top with the navbar on it, which
           is what stops a strip of damask appearing above the header.
         */
-        <div className="relative w-full">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={bandImageSrc} alt="" className="block w-full" />
+        <div className="relative h-56 w-full sm:h-64 md:h-80">
+          {/*
+            A fixed height, not the artwork's own aspect ratio. Drawn at its
+            natural proportions the header stood over a thousand pixels tall on
+            a desktop, roughly four times the band it replaced, and dwarfed
+            everything below it. These heights match what the sage band and its
+            wave used to occupy.
+
+            Squashed rather than cropped. Cropping to this height put the
+            wave straight through the lockup, because the artwork is about
+            1.4 to 1 and a header wants nearer 5 to 1, so there is no band
+            across the full width that the wave stays clear of. Both the wash
+            and the wave take a vertical squash without reading as distorted,
+            and the wave flattens into the shallow curve the old traced one
+            had.
+            eslint-disable-next-line @next/next/no-img-element
+          */}
+          <img
+            src={bandImageSrc}
+            alt=""
+            className="absolute inset-0 h-full w-full object-fill"
+          />
 
           {/*
             Maroon, not cream. The texture is a pale green, where cream sits at
@@ -186,7 +205,7 @@ export default function HeroMetrics({
           */}
           <div
             className="absolute inset-0 flex flex-col items-center justify-center"
-            style={{ paddingTop: NAVBAR_HEIGHT, paddingBottom: "14%" }}
+            style={{ paddingTop: NAVBAR_HEIGHT, paddingBottom: "3.5rem" }}
             aria-hidden="true"
           >
             <div className="flex items-center justify-center">
