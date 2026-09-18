@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { NAVBAR_HEIGHT } from "./navigation";
 import {
   animate,
   motion,
@@ -106,6 +107,16 @@ export type HeroMetricsProps = {
   /** Alternative text for the logo. */
   logoAlt?: string;
   /**
+   * The wavy header artwork.
+   *
+   * When this file loads, it is drawn full width as the whole header and the
+   * navbar sits over it. When it is missing, the sage band with the live-text
+   * lockup below is used instead. The image is preloaded rather than rendered
+   * optimistically, so a missing file never flashes a broken image across the
+   * top of the page.
+   */
+  bandImageSrc?: string;
+  /**
    * Whether the counters may run. Defaults to true, so the figures tick up on
    * mount. The homepage passes `false` while the preloader is still on screen,
    * otherwise the count would finish behind it and the reveal would land on
@@ -117,15 +128,53 @@ export type HeroMetricsProps = {
 export default function HeroMetrics({
   logoSrc = "/dd.png",
   logoAlt = "Wedding Central",
+  bandImageSrc = "/edited-image.png",
   startCounting = true,
 }: HeroMetricsProps) {
   const { scrollY } = useScroll();
   const opacity = useTransform(scrollY, [0, FADE_OVER], [1, FADED_OPACITY]);
+  const [hasBandImage, setHasBandImage] = useState(false);
+
+  // Preloaded rather than rendered and swapped on error: the header is full
+  // width, so a broken image flashing across it would be very visible.
+  useEffect(() => {
+    if (!bandImageSrc) return;
+    const probe = new window.Image();
+    let live = true;
+    probe.onload = () => {
+      if (live) setHasBandImage(true);
+    };
+    probe.src = bandImageSrc;
+    return () => {
+      live = false;
+    };
+  }, [bandImageSrc]);
 
   return (
-    <section className="w-full">
-      {/* Header band - solid sage, wordmark centred. */}
-      <div className="w-full bg-sage px-6 pt-7 pb-3 md:pt-10 md:pb-5">
+    /*
+      Pulled up by the height of the fixed navbar, which the root layout has
+      reserved room for. The bar is meant to sit over the wavy header and read
+      as part of it, rather than floating on a strip of background above it.
+    */
+    <section className="w-full" style={{ marginTop: `calc(${NAVBAR_HEIGHT} * -1)` }}>
+      {hasBandImage ? (
+        /* The artwork carries the wave and the wordmark, so nothing is drawn
+           over it. Top padding keeps its own lettering clear of the navbar.
+           eslint-disable-next-line @next/next/no-img-element */
+        <img
+          src={bandImageSrc}
+          alt={logoAlt}
+          className="block w-full"
+          style={{ paddingTop: NAVBAR_HEIGHT }}
+        />
+      ) : (
+        <>
+      {/* Header band - solid sage, wordmark centred. Top padding carries the
+          navbar's height, so the lockup sits below the bar rather than under it. */}
+      <div
+        className="w-full bg-sage px-6 pb-3 md:pb-5"
+        style={{ paddingTop: `calc(${NAVBAR_HEIGHT} + 1.75rem)` }}
+      >
         {/*
           The same lockup the preloader assembles: WE and ING either side of the
           monogram, CENTRAL set beneath it. The preloader has to position the
@@ -167,6 +216,8 @@ export default function HeroMetrics({
           <path d={WAVE_PATH} fill="currentColor" />
         </svg>
       </div>
+        </>
+      )}
 
       {/*
         Metrics - no background of its own, so the fixed damask painted by

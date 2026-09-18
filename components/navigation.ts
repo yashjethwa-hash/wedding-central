@@ -26,6 +26,7 @@ export const DRAWER_LINKS = [
  */
 export const NAV_LINKS = [
   { label: "Home", href: "/" },
+  { label: "Venues", href: "/venues" },
   { label: "Blogs", href: "/blogs" },
   { label: "Contact", href: "/contact" },
 ];

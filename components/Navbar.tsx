@@ -53,9 +53,17 @@ function UserIcon() {
   );
 }
 
-/** Shared by both icon buttons, so they stay identical targets. */
+/**
+ * Shared by both icon buttons, so they stay identical targets.
+ *
+ * The chip behind each one is what makes them readable. The bar sits over the
+ * sage header band, where cream measures about 1.8 to 1, and the header
+ * artwork can be swapped for a texture of any colour. Darkening a small disc
+ * under each icon keeps them legible whatever ends up behind, without giving
+ * the bar itself a background.
+ */
 const ICON_BUTTON =
-  "flex h-10 w-10 items-center justify-center rounded-lg text-ivory drop-shadow-[0_1px_3px_rgba(0,0,0,0.65)] transition-colors duration-200 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ivory";
+  "flex h-10 w-10 items-center justify-center rounded-full bg-black/30 text-ivory backdrop-blur-[2px] drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)] transition-colors duration-200 hover:bg-black/45 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ivory";
 
 export default function Navbar() {
   const pathname = usePathname() ?? "/";
