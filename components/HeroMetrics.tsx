@@ -67,6 +67,26 @@ const WAVE_PATH =
   "C694.5,9.0 721.3,6.3 749.0,6.0 C776.7,5.7 805.2,7.4 833.0,10.8 " +
   "C860.8,14.2 888.2,18.8 916.0,26.7 C943.8,34.6 986.0,53.2 1000.0,58.5 V0 H0 Z";
 
+/**
+ * The header's wavy bottom edge as a clip path, in objectBoundingBox units so
+ * it follows whatever size the header ends up.
+ *
+ * This is the same traced curve the sage band used, converted from its 1000 by
+ * 100 viewBox. It exists because the artwork cannot carry the wave itself: the
+ * header runs from about 1.7 to 1 on a phone to 8 to 1 on a wide monitor, and
+ * no single image aspect survives that range. Stretching one to fit squashed
+ * the texture by over three times on a desktop. Clipping instead lets the
+ * texture scale uniformly and crop, while the wave stays a curve that is drawn,
+ * not stretched.
+ *
+ * It is referenced through an SVG clipPath with clipPathUnits set to
+ * objectBoundingBox, not through the CSS path() function: path() reads its
+ * coordinates as pixels, so these 0 to 1 values clipped the header down to a
+ * single pixel and the texture vanished entirely.
+ */
+const WAVE_CLIP =
+  "M0,0.8589C0.014,0.8769 0.0562,0.9439 0.084,0.9674C0.1118,0.9908 0.1395,0.9956 0.167,1C0.1945,1.0044 0.2213,1.001 0.249,0.9946C0.2767,0.9881 0.3052,0.9755 0.333,0.9619C0.3608,0.9483 0.3882,0.9351 0.416,0.9133C0.4438,0.8915 0.472,0.8592 0.5,0.832C0.528,0.8048 0.5562,0.7725 0.584,0.7508C0.6118,0.729 0.6395,0.7137 0.667,0.7022C0.6945,0.6906 0.7213,0.6814 0.749,0.6804C0.7767,0.6794 0.8052,0.6852 0.833,0.6967C0.8608,0.7083 0.8882,0.7239 0.916,0.7508C0.9438,0.7776 0.986,0.8409 1,0.8589V0H0Z";
+
 /* -------------------------------------------------------------------------- */
 
 function MetricFigure({ metric, start }: { metric: Metric; start: boolean }) {
@@ -172,26 +192,32 @@ export default function HeroMetrics({
         */
         <div className="relative h-56 w-full sm:h-64 md:h-80">
           {/*
-            A fixed height, not the artwork's own aspect ratio. Drawn at its
-            natural proportions the header stood over a thousand pixels tall on
-            a desktop, roughly four times the band it replaced, and dwarfed
-            everything below it. These heights match what the sage band and its
-            wave used to occupy.
-
-            Squashed rather than cropped. Cropping to this height put the
-            wave straight through the lockup, because the artwork is about
-            1.4 to 1 and a header wants nearer 5 to 1, so there is no band
-            across the full width that the wave stays clear of. Both the wash
-            and the wave take a vertical squash without reading as distorted,
-            and the wave flattens into the shallow curve the old traced one
-            had.
-            eslint-disable-next-line @next/next/no-img-element
+            Clipped to the wave rather than relying on the artwork's own, and
+            scaled with cover so the texture keeps its proportions at every
+            width. Anchored to the top, which is the flat part of the artwork:
+            the wave printed into the lower third of the file is cropped away
+            and replaced by the clip.
           */}
-          <img
-            src={bandImageSrc}
-            alt=""
-            className="absolute inset-0 h-full w-full object-fill"
-          />
+          {/* The clip path itself. Zero sized, so it takes no layout. */}
+          <svg width="0" height="0" aria-hidden="true" className="absolute">
+            <defs>
+              <clipPath id="wc-wave" clipPathUnits="objectBoundingBox">
+                <path d={WAVE_CLIP} />
+              </clipPath>
+            </defs>
+          </svg>
+
+          <div
+            className="absolute inset-0"
+            style={{ clipPath: "url(#wc-wave)" }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={bandImageSrc}
+              alt=""
+              className="h-full w-full object-cover object-top"
+            />
+          </div>
 
           {/*
             Maroon, not cream. The texture is a pale green, where cream sits at
@@ -205,7 +231,7 @@ export default function HeroMetrics({
           */}
           <div
             className="absolute inset-0 flex flex-col items-center justify-center"
-            style={{ paddingTop: NAVBAR_HEIGHT, paddingBottom: "3.5rem" }}
+            style={{ paddingTop: NAVBAR_HEIGHT, paddingBottom: "34%" }}
             aria-hidden="true"
           >
             <div className="flex items-center justify-center">
