@@ -1,24 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { DRAWER_LINKS, NAVBAR_HEIGHT } from "./navigation";
-
-export type NavbarProps = {
-  /**
-   * Centre logo. Defaults to the brand image.
-   *
-   * If the file is not in `public/` the image fails to load and the wordmark
-   * below takes its place, so a missing asset degrades to text rather than to
-   * a broken image icon on every page.
-   */
-  logoSrc?: string;
-  logoAlt?: string;
-  /** Wordmark used when the logo image is absent or fails to load. */
-  brand?: string;
-};
+import { useChrome } from "./ChromeGate";
 
 /** Icons are inline SVG rather than a package, so nothing new is installed. */
 function MenuIcon({ open }: { open: boolean }) {
@@ -70,28 +57,11 @@ function UserIcon() {
 const ICON_BUTTON =
   "flex h-10 w-10 items-center justify-center rounded-lg text-ivory drop-shadow-[0_1px_3px_rgba(0,0,0,0.65)] transition-colors duration-200 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ivory";
 
-export default function Navbar({
-  logoSrc = "/edited-image.png",
-  logoAlt = "Wedding Central",
-  brand = "WEDDING CENTRAL",
-}: NavbarProps) {
+export default function Navbar() {
   const pathname = usePathname() ?? "/";
   const [open, setOpen] = useState(false);
-  const [logoBroken, setLogoBroken] = useState(false);
-  const logoRef = useRef<HTMLImageElement>(null);
+  const { chromeReady } = useChrome();
   const reduceMotion = useReducedMotion();
-
-  /*
-    onError alone is not enough. The markup is server rendered, so the browser
-    can request the logo and fail it before React hydrates and attaches the
-    handler, and that error event is then missed entirely. A finished image
-    with no intrinsic width is one that failed, so this catches the case the
-    handler slept through.
-  */
-  useEffect(() => {
-    const img = logoRef.current;
-    if (img?.complete && img.naturalWidth === 0) setLogoBroken(true);
-  }, []);
 
   // Navigating with the drawer open would otherwise leave it hanging there.
   useEffect(() => setOpen(false), [pathname]);
@@ -114,22 +84,36 @@ export default function Navbar({
     };
   }, [open]);
 
-  const showLogo = Boolean(logoSrc) && !logoBroken;
-
   return (
     <>
       {/*
-        Transparent, as specified. The icons carry a drop shadow instead of the
-        bar carrying a tint, which is what keeps them legible if the bar ever
-        passes over a light background.
+        Transparent. The icons carry a drop shadow instead of the bar carrying
+        a tint, which is what keeps them legible if the bar ever passes over a
+        light background.
       */}
-      <header
+      <motion.header
+        /*
+          Held back until the homepage says the reveal is done, so the intro
+          plays on a clean screen with no bar across the top. Other routes
+          default to ready and never see the delay.
+        */
+        initial={false}
+        animate={{ opacity: chromeReady ? 1 : 0 }}
+        transition={{ duration: reduceMotion ? 0 : 0.5, ease: "easeOut" }}
         className="fixed inset-x-0 top-0 z-50 bg-transparent"
-        style={{ height: NAVBAR_HEIGHT }}
+        /*
+          The bar is transparent and spans the full width, so leaving it
+          clickable would block every pointer event in the top strip of every
+          page. Nothing here takes clicks except the two controls, which opt
+          back in below.
+        */
+        style={{ height: NAVBAR_HEIGHT, pointerEvents: "none" }}
+        aria-hidden={!chromeReady}
       >
         <nav
           aria-label="Main"
           className="mx-auto flex h-full max-w-6xl items-center justify-between gap-4 px-4 sm:px-6 md:px-8"
+          style={{ pointerEvents: chromeReady ? "auto" : "none" }}
         >
           {/* Left: drawer trigger */}
           <button
@@ -143,36 +127,16 @@ export default function Navbar({
             <MenuIcon open={false} />
           </button>
 
-          {/* Centre: logo, routing home */}
-          <Link
-            href="/"
-            aria-label="Wedding Central, go to the homepage"
-            className="rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ivory"
-          >
-            {showLogo ? (
-              /* A plain img, not next/image: this needs an onError fallback,
-                 and the file is not guaranteed to be there.
-                 eslint-disable-next-line @next/next/no-img-element */
-              <img
-                ref={logoRef}
-                src={logoSrc}
-                alt={logoAlt}
-                onError={() => setLogoBroken(true)}
-                className="block h-8 w-auto drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)] md:h-10"
-              />
-            ) : (
-              <span className="block font-body text-xs font-semibold tracking-[0.2em] text-ivory drop-shadow-[0_1px_3px_rgba(0,0,0,0.65)] sm:text-sm md:text-base">
-                {brand}
-              </span>
-            )}
-          </Link>
+          {/* Centre is deliberately empty. The brand lives in the wavy
+              header band, and repeating it here would print it twice. */}
+          <span aria-hidden="true" />
 
           {/* Right: account */}
           <Link href="/contact" aria-label="Account" className={ICON_BUTTON}>
             <UserIcon />
           </Link>
         </nav>
-      </header>
+      </motion.header>
 
       {/* Side drawer */}
       <AnimatePresence>

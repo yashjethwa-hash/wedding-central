@@ -1,16 +1,27 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useChrome } from "@/components/ChromeGate";
 import Preloader from "@/components/Preloader";
 import HeroMetrics from "@/components/HeroMetrics";
 import FloatingBubbles from "@/components/FloatingBubbles";
 import HomeCarousels from "@/components/HomeCarousels";
-import InteractiveMap from "@/components/InteractiveMap";
-import VinylPlayer from "@/components/VinylPlayer";
 
 export default function HomeContent() {
   const [isLoading, setIsLoading] = useState(true);
+  const { setChromeReady } = useChrome();
+
+  /*
+    The navbar is held back for as long as the preloader is on screen, so the
+    WEDDING lockup plays against nothing but the background. Releasing it on
+    unmount matters as much as setting it: without that, navigating away
+    mid-intro would leave every other route with no navbar.
+  */
+  useEffect(() => {
+    setChromeReady(!isLoading);
+    return () => setChromeReady(true);
+  }, [isLoading, setChromeReady]);
 
   // Stable identity so the preloader's timers are not restarted on re-render.
   const handleAnimationComplete = useCallback(() => setIsLoading(false), []);
@@ -42,10 +53,6 @@ export default function HomeContent() {
           <FloatingBubbles />
 
           <HomeCarousels />
-
-          <InteractiveMap />
-
-          <VinylPlayer />
         </main>
       </motion.div>
     </>
