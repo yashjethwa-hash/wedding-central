@@ -33,6 +33,12 @@ const FADE_OVER = 420;
 const FADED_OPACITY = 0.2;
 
 /** WE and ING, sized off the monogram's height the way the preloader sizes them. */
+const WORDMARK_BASE =
+  "font-serif-display text-[2.8rem] font-medium leading-none md:text-[4rem]";
+
+/** Over the pale textured artwork, where cream would be illegible. */
+const WORDMARK_DARK = `${WORDMARK_BASE} text-maroon`;
+
 const WORDMARK =
   "font-serif-display text-[2.8rem] font-medium leading-none text-ivory md:text-[4rem]";
 
@@ -158,15 +164,58 @@ export default function HeroMetrics({
     */
     <section className="w-full" style={{ marginTop: `calc(${NAVBAR_HEIGHT} * -1)` }}>
       {hasBandImage ? (
-        /* The artwork carries the wave and the wordmark, so nothing is drawn
-           over it. Top padding keeps its own lettering clear of the navbar.
-           eslint-disable-next-line @next/next/no-img-element */
-        <img
-          src={bandImageSrc}
-          alt={logoAlt}
-          className="block w-full"
-          style={{ paddingTop: NAVBAR_HEIGHT }}
-        />
+        /*
+          The artwork is the ground, not the whole header: it carries the
+          texture and the wavy edge but no lettering, so the lockup is drawn
+          over it. The image runs flush to the top with the navbar on it, which
+          is what stops a strip of damask appearing above the header.
+        */
+        <div className="relative w-full">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={bandImageSrc} alt="" className="block w-full" />
+
+          {/*
+            Maroon, not cream. The texture is a pale green, where cream sits at
+            about 1.8 to 1 and is barely there. The monogram is a cream PNG, so
+            it is recoloured by using it as a mask over a maroon fill rather
+            than by filtering it.
+
+            Biased above centre because the wave occupies the lower part of the
+            artwork, and hidden from assistive tech, or it would be read out as
+            three separate words.
+          */}
+          <div
+            className="absolute inset-0 flex flex-col items-center justify-center"
+            style={{ paddingTop: NAVBAR_HEIGHT, paddingBottom: "14%" }}
+            aria-hidden="true"
+          >
+            <div className="flex items-center justify-center">
+              <span className={`${WORDMARK_DARK} -mr-[0.04em]`}>WE</span>
+
+              <span
+                className="block h-14 w-[6.2rem] bg-maroon md:h-20 md:w-[8.8rem]"
+                style={{
+                  maskImage: `url(${logoSrc})`,
+                  WebkitMaskImage: `url(${logoSrc})`,
+                  maskSize: "contain",
+                  WebkitMaskSize: "contain",
+                  maskRepeat: "no-repeat",
+                  WebkitMaskRepeat: "no-repeat",
+                  maskPosition: "center",
+                  WebkitMaskPosition: "center",
+                }}
+              />
+
+              <span className={`${WORDMARK_DARK} -ml-[0.04em]`}>ING</span>
+            </div>
+
+            <span className="mt-1 font-body text-[0.6rem] font-light tracking-[0.42em] text-maroon indent-[0.42em] md:mt-1.5 md:text-[0.8rem]">
+              CENTRAL
+            </span>
+          </div>
+
+          <span className="sr-only">{logoAlt}</span>
+        </div>
       ) : (
         <>
       {/* Header band - solid sage, wordmark centred. Top padding carries the
