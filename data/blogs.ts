@@ -381,6 +381,52 @@ export const blogs: Blog[] = [
       <p>Always operate at eighty percent capacity during the main course to leave room for dessert. Bypass the standard blocks of ice cream and head straight for the items being made on the spot. Hot jalebis straight from the oil or freshly steamed malpua offer a significantly better culinary experience.</p>
     `,
   },
+  {
+    slug: "dream-wedding-theme",
+    image: "/blogs/dream-wedding-theme.jpeg",
+    title: "How to Pick Your Dream Wedding Theme",
+    category: "Planning",
+    author: "Wedding Central",
+    readTime: "3 min read",
+    date: "2026-09-19",
+    excerpt:
+      "Forget copying a Pinterest board. Start with a feeling, build a story, and let every little detail of your shaadi follow.",
+    content: `
+      <p>You open Pinterest looking for one wedding idea and somehow leave with 47 saved boards, five colour palettes, and a completely new identity for your wedding.</p>
+      <p>The problem isn't finding inspiration. There is plenty of it. The real question is: what actually feels like you?</p>
+      <p>Because the most memorable Indian weddings aren't necessarily the ones with the biggest flowers or the grandest stage. They are the ones where the little details seem to belong together, like the colours, the music, the food, the flowers, the photographs and the people.</p>
+      <p>So before you decide what your wedding should look like, decide what you want it to feel like.</p>
+
+      <h2>1. Start With a Feeling</h2>
+      <p>Forget "royal", "boho" or "pastel" for a minute. Ask yourself: do you want your wedding to feel intimate, nostalgic, colourful, dreamy, relaxed, or loud in the best possible way?</p>
+      <p>That feeling can become the starting point for your entire wedding theme.</p>
+
+      <h2>2. Let Your Life Be the Moodboard</h2>
+      <p>Your wedding inspiration doesn't have to come from another wedding. It could come from your grandmother's living room, your favourite café, an old family photograph, or your first holiday together.</p>
+      <p>Suddenly, your wedding theme isn't something you picked from a catalogue. It has a reason to exist.</p>
+
+      <h2>3. Your Venue Already Has a Personality</h2>
+      <p>A heritage haveli doesn't need to pretend it's a palace. A beach doesn't need a hundred artificial flowers. And a city rooftop can actually look better when you let the skyline do some of the decorating.</p>
+      <p>The best wedding décor works with the venue instead of fighting it.</p>
+
+      <h2>4. Flowers Should Set the Mood</h2>
+      <p>Flowers are more than something pretty sitting behind the couple. Loose marigolds can make a celebration feel unmistakably Indian. Wild foliage can make it feel relaxed. White flowers can make a space feel quiet and elegant. Roses can give a royal feel.</p>
+      <p>Don't choose flowers only because they are trending. Choose them because they say something about the mood and aesthetic you want.</p>
+
+      <h2>5. Let the Lighting Do Some of the Work</h2>
+      <p>Good lighting can make simple décor look extraordinary. Warm lamps, candles, hanging lights, and soft pools of light can completely change how a venue feels once the sun goes down.</p>
+      <p>Sometimes, the answer isn't adding more décor. It's switching off the harsh lights.</p>
+
+      <h2>6. Don't Make Everything Match</h2>
+      <p>Your wedding outfit doesn't have to match the mandap. Your bridesmaids don't have to match the flowers. And your tablecloth doesn't need to match your invitation word for word.</p>
+      <p>A little contrast keeps a wedding from feeling overly designed. The trick isn't matching everything, it's making everything belong together.</p>
+
+      <h2>The Best Theme Might Be Your Story</h2>
+      <p>Maybe your wedding has no official name for its theme. Maybe it is just your favourite colours, your family's traditions, a little nostalgia, food you grew up eating, and details that make sense only to the two of you. That is enough.</p>
+      <p>Because years from now, nobody is going to ask whether your wedding was "boho-themed" or "pastel-themed". They will remember how it felt.</p>
+      <p>And that is the real point of wedding inspiration: it is the one you look back at and instantly know, this was ours.</p>
+    `,
+  },
 ];
 
 /** Every category, in display order. Kept for filtering the hub later on. */
