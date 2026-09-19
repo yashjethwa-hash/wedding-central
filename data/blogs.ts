@@ -294,6 +294,7 @@ export const blogs: Blog[] = [
   },
   {
     slug: "decoding-the-wedding-dress-code",
+    image: "/blogs/decoding-the-wedding-dress-code.jpg",
     title: "Decoding the Dress Code",
     category: "Attending",
     author: "Wedding Central",
@@ -320,6 +321,7 @@ export const blogs: Blog[] = [
   },
   {
     slug: "modern-guest-gifting-guide",
+    image: "/blogs/modern-guest-gifting-guide.jpg",
     title: "The Modern Guest Gifting Guide",
     category: "Attending",
     author: "Wedding Central",
