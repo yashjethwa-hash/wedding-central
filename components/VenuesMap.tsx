@@ -492,31 +492,22 @@ function PinGlyph({ active }: { active: boolean }) {
   );
 }
 
-function PlaceCard({ place }: { place: Place }) {
+/** A small stroked X, used only for the popover's close control. */
+function CloseIcon() {
   return (
-    <li className="flex h-full flex-col rounded-2xl border border-white/20 bg-white/10 p-6 shadow-lg shadow-black/20 backdrop-blur-md transition duration-300 ease-out hover:border-white/35 hover:bg-white/15 md:p-7">
-      <h3 className="font-serif-display text-xl font-semibold leading-snug text-ivory md:text-2xl">
-        {place.heading}
-      </h3>
-
-      <p className="mt-1.5 font-body text-xs font-semibold tracking-[0.12em] text-ivory/65 uppercase">
-        {place.tagline}
-      </p>
-
-      <p className="mt-4 flex-1 font-body text-sm leading-relaxed text-ivory/85">
-        {place.description}
-      </p>
-
-      <a
-        href={`${MAPS_URL}${place.mapQuery}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mt-6 inline-flex w-fit items-center gap-2 rounded-lg bg-ivory px-5 py-2.5 font-body text-sm font-semibold text-maroon transition duration-200 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ivory"
-      >
-        View on Google Maps
-        <ExternalArrow />
-      </a>
-    </li>
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      aria-hidden="true"
+      focusable="false"
+      className="h-4 w-4"
+    >
+      <path d="M5 5l14 14" />
+      <path d="M19 5L5 19" />
+    </svg>
   );
 }
 
@@ -586,6 +577,17 @@ export default function VenuesMap() {
     // A tooltip left open would otherwise point at a pin from the old set.
     setOpenPin(null);
   }
+
+  // Escape is a standard way to dismiss a popover, on top of the pin toggle
+  // and the explicit close button inside the card itself.
+  useEffect(() => {
+    if (!openPin) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpenPin(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [openPin]);
 
   return (
     <section className="w-full" aria-labelledby="venues-heading">
@@ -681,7 +683,11 @@ export default function VenuesMap() {
                     const isOpen = openPin === place.name;
                     // Flip the card to the left of the pin near the right edge,
                     // or it would run off the map.
-                    const flip = place.left > 62;
+                    const flipHorizontal = place.left > 58;
+                    // Pins near the top have nowhere to open upward into: the
+                    // frame clips at its own edge, so the card drops below the
+                    // pin instead for anything in the top fifth of the map.
+                    const flipVertical = place.top < 20;
 
                     return (
                       <div
@@ -765,6 +771,8 @@ export default function VenuesMap() {
                         <AnimatePresence>
                           {isOpen && (
                             <motion.div
+                              role="group"
+                              aria-label={place.heading}
                               initial={
                                 reduceMotion
                                   ? { opacity: 0 }
@@ -778,16 +786,32 @@ export default function VenuesMap() {
                               }
                               transition={{ duration: 0.18, ease: "easeOut" }}
                               onClick={(event) => event.stopPropagation()}
-                              className={`absolute bottom-2 w-52 rounded-xl border border-white/25 bg-[#2c0917]/95 p-4 shadow-2xl shadow-black/50 backdrop-blur-xl ${
-                                flip ? "right-3" : "left-3"
-                              }`}
+                              className={`absolute w-64 max-w-[70vw] rounded-xl border border-white/25 bg-[#2c0917]/95 p-4 shadow-2xl shadow-black/50 backdrop-blur-xl sm:w-72 ${
+                                flipVertical ? "top-9" : "bottom-2"
+                              } ${flipHorizontal ? "right-3" : "left-3"}`}
                             >
-                              <p className="font-serif-display text-sm font-semibold text-ivory">
+                              <button
+                                type="button"
+                                onClick={(event) => {
+                                  event.stopPropagation();
+                                  setOpenPin(null);
+                                }}
+                                aria-label={`Close ${place.heading} details`}
+                                className="absolute top-2.5 right-2.5 flex h-6 w-6 items-center justify-center rounded-full text-ivory/70 transition-colors duration-200 hover:bg-white/10 hover:text-ivory focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ivory"
+                              >
+                                <CloseIcon />
+                              </button>
+
+                              <p className="pr-6 font-serif-display text-sm font-semibold text-ivory">
                                 {place.heading}
                               </p>
 
-                              <p className="mt-1.5 font-body text-xs leading-relaxed text-ivory/80">
+                              <p className="mt-1.5 font-body text-xs font-semibold tracking-[0.12em] text-ivory/65 uppercase">
                                 {place.tagline}
+                              </p>
+
+                              <p className="mt-3 font-body text-xs leading-relaxed text-ivory/80">
+                                {place.description}
                               </p>
 
                               <a
@@ -839,27 +863,11 @@ export default function VenuesMap() {
         </div>
 
         <p className="mx-auto mt-6 max-w-2xl text-center font-body text-xs leading-relaxed text-ivory/55">
-          Pin positions are projected from real coordinates. Markets in the same
-          city are fanned out so each one can be reached, so those clusters are
-          not to scale.
+          Tap or click a pin for the full detail and a link to Google Maps.
+          Pin positions are projected from real coordinates; markets in the
+          same city are fanned out so each one can be reached, so those
+          clusters are not to scale.
         </p>
-
-        {/* Every entry again as a card, so the detail is readable without
-            hunting for a pin, and so the page works at any width. */}
-        <AnimatePresence mode="wait">
-          <motion.ul
-            key={tab}
-            className="mt-14 grid list-none grid-cols-1 gap-6 p-0 md:mt-20 md:grid-cols-2"
-            initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -14 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-          >
-            {active.places.map((place) => (
-              <PlaceCard key={place.name} place={place} />
-            ))}
-          </motion.ul>
-        </AnimatePresence>
       </div>
     </section>
   );

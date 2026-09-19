@@ -83,8 +83,12 @@ body::before {
 }
 
 /*
- * Horizontal carousels scroll by swipe, trackpad or keyboard, so the bar itself
- * is only visual noise. Hidden in every engine rather than just WebKit.
+ * Horizontal carousels scroll by swipe, trackpad or keyboard. On touch
+ * devices the bar is only visual noise, so it stays hidden there in every
+ * engine rather than just WebKit. On a desktop with a mouse or trackpad,
+ * a visible track is the only hint that there is more to scroll, so the
+ * `(hover: hover) and (pointer: fine)` block below brings a slim, branded
+ * bar back for that input class while touch scrolling is untouched.
  */
 .no-scrollbar {
   scrollbar-width: none;
@@ -93,4 +97,29 @@ body::before {
 
 .no-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .no-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--ivory-dim) transparent;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: block;
+    height: 8px;
+  }
+
+  .no-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .no-scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--ivory-dim);
+    border-radius: 9999px;
+  }
+
+  .no-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: var(--ivory);
+  }
 }

@@ -218,10 +218,10 @@ export const blogs: Blog[] = [
   },
   {
     slug: "bride-vanity-diaries",
-    image: "/blogs/bride-vanity-diaries.jpg",
+    image: "/blogs/bride-vanity-diaries.jpeg",
     title: "The Bride Vanity Diaries",
     category: "Planning",
-    author: "Wedding Central",
+    author: "Drashti",
     readTime: "4 min read",
     date: "2026-09-12",
     excerpt:
@@ -386,28 +386,28 @@ export const blogs: Blog[] = [
     image: "/blogs/dream-wedding-theme.jpeg",
     title: "How to Pick Your Dream Wedding Theme",
     category: "Planning",
-    author: "Wedding Central",
-    readTime: "3 min read",
+    author: "Fizza",
+    readTime: "7 min read",
     date: "2026-09-19",
     excerpt:
-      "Forget copying a Pinterest board. Start with a feeling, build a story, and let every little detail of your shaadi follow.",
+      "A wedding planning guide to choosing a wedding theme that is actually yours, instead of copying someone else's Pinterest board. Start with a feeling, build a story, and let every detail of your shaadi follow.",
     content: `
       <p>You open Pinterest looking for one wedding idea and somehow leave with 47 saved boards, five colour palettes, and a completely new identity for your wedding.</p>
-      <p>The problem isn't finding inspiration. There is plenty of it. The real question is: what actually feels like you?</p>
-      <p>Because the most memorable Indian weddings aren't necessarily the ones with the biggest flowers or the grandest stage. They are the ones where the little details seem to belong together, like the colours, the music, the food, the flowers, the photographs and the people.</p>
+      <p>The problem isn't finding inspiration. There is plenty of it. The real question at the centre of every good wedding planning checklist is: what actually feels like you?</p>
+      <p>Because the most memorable Indian weddings aren't necessarily the ones with the biggest flowers or the grandest stage. They are the ones where the little details seem to belong together, like the colours, the music, the food, the flowers, the photographs and the people. Deciding on a wedding theme is really the first big creative decision of wedding planning, and it is the one that quietly shapes every vendor conversation after it.</p>
       <p>So before you decide what your wedding should look like, decide what you want it to feel like.</p>
 
-      <h2>1. Start With a Feeling</h2>
+      <h2>1. Start With a Feeling, Not a Wedding Theme Name</h2>
       <p>Forget "royal", "boho" or "pastel" for a minute. Ask yourself: do you want your wedding to feel intimate, nostalgic, colourful, dreamy, relaxed, or loud in the best possible way?</p>
-      <p>That feeling can become the starting point for your entire wedding theme.</p>
+      <p>That feeling can become the starting point for your entire wedding theme, long before you attach a trend name to it. Most couples do this backwards: they pick a label first and then spend months trying to make their actual wedding fit it.</p>
 
       <h2>2. Let Your Life Be the Moodboard</h2>
       <p>Your wedding inspiration doesn't have to come from another wedding. It could come from your grandmother's living room, your favourite café, an old family photograph, or your first holiday together.</p>
-      <p>Suddenly, your wedding theme isn't something you picked from a catalogue. It has a reason to exist.</p>
+      <p>Suddenly, your wedding theme isn't something you picked from a catalogue. It has a reason to exist, and it becomes something your vendors can actually work with instead of a mood board full of other people's weddings.</p>
 
       <h2>3. Your Venue Already Has a Personality</h2>
       <p>A heritage haveli doesn't need to pretend it's a palace. A beach doesn't need a hundred artificial flowers. And a city rooftop can actually look better when you let the skyline do some of the decorating.</p>
-      <p>The best wedding décor works with the venue instead of fighting it.</p>
+      <p>The best wedding décor works with the venue instead of fighting it. This is also one of the most useful wedding planning tips for anyone choosing between a destination wedding and a hometown one: pick the theme after the venue is finalised, not before.</p>
 
       <h2>4. Flowers Should Set the Mood</h2>
       <p>Flowers are more than something pretty sitting behind the couple. Loose marigolds can make a celebration feel unmistakably Indian. Wild foliage can make it feel relaxed. White flowers can make a space feel quiet and elegant. Roses can give a royal feel.</p>
@@ -420,6 +420,20 @@ export const blogs: Blog[] = [
       <h2>6. Don't Make Everything Match</h2>
       <p>Your wedding outfit doesn't have to match the mandap. Your bridesmaids don't have to match the flowers. And your tablecloth doesn't need to match your invitation word for word.</p>
       <p>A little contrast keeps a wedding from feeling overly designed. The trick isn't matching everything, it's making everything belong together.</p>
+
+      <h2>Popular Indian Wedding Theme Ideas to Explore</h2>
+      <p>If you still want a starting point, here are a few Indian wedding theme ideas that keep coming up for good reason, each one flexible enough to make your own:</p>
+      <ul>
+        <li><strong>Royal Rajasthani:</strong> forts, jewel tones, brass lanterns and heavy florals, for a wedding that leans grand.</li>
+        <li><strong>Pastel minimalist:</strong> soft colour families, restrained florals and negative space, for couples who want the venue to breathe.</li>
+        <li><strong>Beach or destination:</strong> lighter fabrics, sunset ceremony timings and décor that works with sand and sea air instead of against it.</li>
+        <li><strong>Vintage Bollywood:</strong> retro typography, warm gold lighting and playlists that borrow from an older era of Hindi cinema.</li>
+        <li><strong>Boho garden:</strong> trailing greens, natural textures like jute and cane, and an outdoor-first layout.</li>
+      </ul>
+      <p>Treat this list as a conversation starter with your decorator, not a box to check. The theme only works once you have layered in your own feeling, your own moodboard and your own venue, from the sections above.</p>
+
+      <h2>Matching Your Wedding Theme to Your Budget</h2>
+      <p>A theme should guide how you spend, not inflate what you spend. A clear theme actually makes budgeting easier: once you know the mood you are building, it is far simpler to tell a nice-to-have from a must-have, whether that is a floral installation, a custom mandap or a lighting design. If your budget is the tighter constraint, choose a theme that leans on one or two strong elements, like lighting or a single statement floral moment, rather than trying to layer in everything at once.</p>
 
       <h2>The Best Theme Might Be Your Story</h2>
       <p>Maybe your wedding has no official name for its theme. Maybe it is just your favourite colours, your family's traditions, a little nostalgia, food you grew up eating, and details that make sense only to the two of you. That is enough.</p>

@@ -5,7 +5,13 @@ import { OG_IMAGE } from "@/lib/seo";
 export const metadata: Metadata = {
   title: "Venues & Markets",
   description:
-    "Twenty destination wedding locations across India and eighteen wedding markets, from Chandni Chowk to Johari Bazaar. Pinned on a map, with directions.",
+    "Twenty destination wedding venues across India and eighteen wedding shopping markets, from Chandni Chowk to Johari Bazaar. Pinned on a map, with directions.",
+  keywords: [
+    "destination wedding venues India",
+    "best wedding destinations in India",
+    "Indian wedding shopping markets",
+    "wedding venue map India",
+  ],
   openGraph: {
     title: "Venues & Markets | Wedding Central",
     description:

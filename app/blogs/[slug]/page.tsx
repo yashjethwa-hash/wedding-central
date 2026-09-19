@@ -19,10 +19,14 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
   if (!blog) return { title: "Not found" };
 
+  const categoryKeyword =
+    blog.category === "Planning" ? "wedding planning" : "wedding guest guide";
+
   // Bare titles: the root layout's template appends the site name.
   return {
     title: blog.title,
     description: blog.excerpt,
+    keywords: [categoryKeyword, "Indian wedding", blog.title],
     openGraph: {
       type: "article",
       title: blog.title,

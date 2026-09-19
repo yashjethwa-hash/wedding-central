@@ -48,9 +48,11 @@ export const metadata: Metadata = {
     "Indian weddings",
     "destination wedding India",
     "wedding planning India",
+    "how to plan an Indian wedding",
     "shaadi",
     "wedding markets Mumbai",
     "wedding blog India",
+    "Indian wedding theme ideas",
   ],
   openGraph: {
     type: "website",

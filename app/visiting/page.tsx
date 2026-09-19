@@ -5,7 +5,13 @@ import { OG_IMAGE } from "@/lib/seo";
 export const metadata: Metadata = {
   title: "Visiting a Wedding",
   description:
-    "Guest etiquette, gifting, dress codes and what the ceremony actually means. What to know before you turn up to an Indian wedding.",
+    "Wedding guest etiquette, gifting ideas, dress codes and what the ceremony actually means. What to know before you attend an Indian wedding.",
+  keywords: [
+    "wedding guest etiquette",
+    "what to wear to an Indian wedding",
+    "wedding gift ideas India",
+    "Indian wedding guest guide",
+  ],
   openGraph: {
     title: "Visiting a Wedding | Wedding Central",
     description:

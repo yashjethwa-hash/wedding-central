@@ -14,7 +14,13 @@ import {
 export const metadata: Metadata = {
   title: "Wedding Planning & Inspiration",
   description:
-    "Rituals, regional traditions, outfits and budgets, decoded for everyone planning an Indian wedding or attending one. Read the Wedding Central stories.",
+    "Wedding planning guides on rituals, regional traditions, outfits, themes and budgets, decoded for everyone planning an Indian wedding or attending one.",
+  keywords: [
+    "wedding planning guides",
+    "Indian wedding blog",
+    "wedding theme ideas",
+    "how to plan a wedding on a budget",
+  ],
   openGraph: {
     title: "Wedding Planning & Inspiration | Wedding Central",
     description:
@@ -40,7 +46,7 @@ const SECTION_TITLES: Record<BlogCategory, string> = {
  * The story that takes the hero slot at the top of the hub, chosen by hand
  * rather than by date so an editor decides what leads the page.
  */
-const FEATURED_SLUG = "bride-and-groom-outfits-a-modern-guide";
+const FEATURED_SLUG = "bride-vanity-diaries";
 
 /** Newest first, so the groups below read chronologically without hand ordering. */
 const sorted = [...blogs].sort((a, b) => b.date.localeCompare(a.date));
