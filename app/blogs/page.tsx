@@ -126,11 +126,7 @@ export default function BlogsPage() {
   return (
     <main className="w-full px-6 py-16 md:px-8 md:py-24">
       <header className="mx-auto max-w-3xl text-center">
-        <p className="font-body text-xs font-semibold tracking-[0.22em] text-ivory/70 uppercase">
-          Wedding Central
-        </p>
-
-        <h1 className="mt-4 font-serif-display text-4xl leading-tight font-medium text-ivory md:text-5xl lg:text-6xl">
+        <h1 className="font-serif-display text-4xl leading-tight font-medium text-ivory md:text-5xl lg:text-6xl">
           Wedding Planning &amp; Inspiration
         </h1>
 

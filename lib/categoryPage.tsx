@@ -9,12 +9,10 @@ import { getBlogsByCategory, type BlogCategory } from "@/data/blogs";
  * the markup lives here once and each route supplies its own copy and metadata.
  */
 export default function CategoryPage({
-  eyebrow,
   title,
   intro,
   category,
 }: {
-  eyebrow: string;
   title: string;
   intro: string;
   category: BlogCategory;
@@ -24,11 +22,7 @@ export default function CategoryPage({
   return (
     <main className="w-full px-6 py-16 md:px-8 md:py-24">
       <header className="mx-auto max-w-3xl text-center">
-        <p className="font-body text-xs font-semibold tracking-[0.22em] text-ivory/70 uppercase">
-          {eyebrow}
-        </p>
-
-        <h1 className="mt-4 font-serif-display text-4xl leading-tight font-medium text-ivory md:text-5xl">
+        <h1 className="font-serif-display text-4xl leading-tight font-medium text-ivory md:text-5xl">
           {title}
         </h1>
 

@@ -21,14 +21,15 @@ export const DRAWER_LINKS = [
 /**
  * Footer quick links.
  *
- * Kept separate from the drawer so /blogs and /contact stay reachable: the
- * drawer no longer lists either of them.
+ * Kept separate from the drawer so /blogs stays reachable: the drawer does not
+ * list it. /contact is deliberately in neither, so the only way in is a direct
+ * link - put it back in one of these two lists if the page should be findable.
  */
 export const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "Venues", href: "/venues" },
   { label: "Blogs", href: "/blogs" },
-  { label: "Contact", href: "/contact" },
+  { label: "Playlists", href: "/playlists" },
 ];
 
 /** Height of the fixed bar. The layout reserves this much room above content. */

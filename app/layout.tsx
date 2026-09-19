@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat, Playfair_Display } from "next/font/google";
 import { ChromeProvider } from "@/components/ChromeGate";
 import Navbar from "@/components/Navbar";
+import BrandHeader from "@/components/BrandHeader";
 import { NAVBAR_HEIGHT } from "@/components/navigation";
 import Footer from "@/components/Footer";
 import { OG_IMAGE } from "@/lib/seo";
@@ -83,7 +84,13 @@ export default function RootLayout({
 
           {/* The navbar is fixed, so it is out of flow. This reserves the room
               it would have taken, which keeps it off the top of every page. */}
-          <div style={{ paddingTop: NAVBAR_HEIGHT }}>{children}</div>
+          <div style={{ paddingTop: NAVBAR_HEIGHT }}>
+            {/* The masthead, on every route. It pulls itself back up under the
+                navbar, so the bar reads as part of the artwork. */}
+            <BrandHeader />
+
+            {children}
+          </div>
 
           <Footer />
         </ChromeProvider>

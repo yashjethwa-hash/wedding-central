@@ -17,7 +17,6 @@ export const metadata: Metadata = {
 export default function VisitingPage() {
   return (
     <CategoryPage
-      eyebrow="Wedding Central"
       title="Visiting a Wedding"
       intro="Etiquette, gifting, dress codes and what is actually happening during the ceremony. What to know before you turn up."
       category="Attending"

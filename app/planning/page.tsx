@@ -17,7 +17,6 @@ export const metadata: Metadata = {
 export default function PlanningPage() {
   return (
     <CategoryPage
-      eyebrow="Wedding Central"
       title="Planning a Wedding"
       intro="Rituals, regional traditions, outfits, vendors and what things actually cost. The reading for everyone putting a shaadi together."
       category="Planning"

@@ -19,11 +19,7 @@ export default function ContactPage() {
     <main className="w-full px-6 py-16 md:px-8 md:py-24">
       <div className="mx-auto max-w-2xl">
         <header className="text-center">
-          <p className="font-body text-xs font-semibold tracking-[0.22em] text-ivory/70 uppercase">
-            Wedding Central
-          </p>
-
-          <h1 className="mt-4 font-serif-display text-4xl leading-tight font-medium text-ivory md:text-5xl">
+          <h1 className="font-serif-display text-4xl leading-tight font-medium text-ivory md:text-5xl">
             Get in touch
           </h1>
 
