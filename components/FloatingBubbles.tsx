@@ -8,15 +8,13 @@ import { animate, motion, useMotionValue, useReducedMotion } from "framer-motion
 /* -------------------------------------------------------------------------- */
 
 const QUESTIONS = [
-  "How to choose from too many options?",
-  "What shall I wear to a daytime and a nighttime wedding?",
-  "How do I choose the right colour for my wedding?",
-  "Where do we start planning our wedding?",
-  "How to plan the shaadi menu?",
+  "How to make a wedding budget-friendly?",
+  "How to decide a wedding theme?",
   "What shall I gift the couple?",
-  "How to manage the guest list?",
-  "What is the best time for the pheras?",
   "How to pick the right wedding photographer?",
+  "How to choose the right colour for bride and groom’s outfit?",
+  "What games can be played in a wedding?",
+  "What skincare should the bride and groom follow before the wedding?",
 ];
 
 /* -------------------------------------------------------------------------- */

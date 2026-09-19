@@ -189,6 +189,7 @@ export const blogs: Blog[] = [
   },
   {
     slug: "budget-friendly-wedding-playbook",
+    image: "/blogs/budget-friendly-wedding-playbook.jpg",
     title: "Budget-Friendly Wedding Playbook",
     category: "Planning",
     author: "Parnika",
@@ -351,9 +352,10 @@ export const blogs: Blog[] = [
   },
   {
     slug: "navigating-the-shaadi-buffet",
+    image: "/blogs/navigating-the-shaadi-buffet.jpg",
     title: "Navigating the Shaadi Buffet",
     category: "Attending",
-    author: "Wedding Central",
+    author: "Drashti",
     readTime: "3 min read",
     date: "2026-08-25",
     excerpt:
