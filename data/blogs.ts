@@ -55,6 +55,7 @@ export function formatDate(iso: string) {
 export const blogs: Blog[] = [
   {
     slug: "wedding-photographer-prep",
+    image: "/blogs/wedding-photographer-prep.jpg",
     title: "Wedding Photographer Prep",
     category: "Planning",
     author: "Bushra",
@@ -121,6 +122,7 @@ export const blogs: Blog[] = [
   },
   {
     slug: "instagrammification-of-weddings",
+    image: "/blogs/instagrammification-of-weddings.jpg",
     title: "Instagrammification of Weddings",
     category: "Planning",
     author: "Sanah",
@@ -153,6 +155,7 @@ export const blogs: Blog[] = [
   },
   {
     slug: "bride-and-groom-outfits-a-modern-guide",
+    image: "/blogs/bride-and-groom-outfits-a-modern-guide.jpg",
     title: "Bride & Groom Outfits: A Modern Guide",
     category: "Planning",
     author: "Nalin",
@@ -189,39 +192,32 @@ export const blogs: Blog[] = [
     title: "Budget-Friendly Wedding Playbook",
     category: "Planning",
     author: "Parnika",
-    readTime: "6 min read",
+    readTime: "4 min read",
     date: "2026-06-24",
     excerpt:
-      "A smaller budget is a design constraint, not a compromise. Where the money actually goes, and where it does not need to.",
+      "Weddings have become week long parties, and the fluff is where the budget quietly goes. Here is how to curb it without touching the experience.",
     content: `
-      <p>A smaller budget is a design constraint, not a compromise. Constraints tend to produce better weddings than blank cheques do, as long as you decide early where the money goes.</p>
+      <p>The wedding market today is dominated by Gen Z and late millennials who increasingly see weddings as a full blown, week long party, valuing experiences and memories more than traditions and rituals. This cohort has an eclectic set of expenses that silently pump up the budget. Here is exactly how you can curb the fluff without compromising on the experience.</p>
 
-      <h2>Start with the guest list, because it is the budget</h2>
-      <p>Almost every number in your spreadsheet is really a function of one number: how many people are eating. Catering, seating, venue size, favours, and the size of the space you have to decorate all scale directly with the headcount.</p>
-      <p>Cutting fifty guests will save you more than every clever saving in the rest of this article put together. Decide the number first, hold the line, and build everything else inside it. If that is not possible in your family, and often it is not, accept it and cut elsewhere rather than pretending.</p>
+      <h2>Start with the guest list</h2>
+      <p>Before the venue, caterers or decoration, the first order of business is determining your guest list. Your wedding is about you, your partner and your loved ones, the judgemental next door neighbour has no place here. Be intentional with your guest list.</p>
 
-      <h2>The 50-10-10 starting point</h2>
-      <p>As a first draft, allocate roughly 50 percent of the total to venue and catering together, 10 percent to decor, and 10 percent to photography and video. That leaves about 30 percent for outfits, jewellery, music, invitations, transport, and the contingency you will absolutely need.</p>
-      <p>Treat it as a starting shape rather than a rule. If photography matters more to you than flowers, move the money. The point of the framework is that it forces the trade to be explicit instead of letting the last few vendors quietly consume whatever is left.</p>
+      <h2>Reuse your decor</h2>
+      <p>Being sustainable has never been cooler, so reuse your decor. Ditch the superfluous decoration, it is so 2016. Minimal floral decorations that segue into nature's backdrop exude luxury in a cost-effective manner.</p>
 
-      <h2>Decor that is not thrown away</h2>
-      <p>Decor is where budgets go to die, and it is also the most reusable part of the day. Rent structures rather than building them. Choose flowers that are in season and local, which costs a fraction of imported stems and looks better for it.</p>
-      <p>Lean on the venue instead of covering it, since lighting a good space well is dramatically cheaper than disguising a poor one. Potted plants can go home with guests or to the family afterwards rather than into a bin at midnight.</p>
+      <h2>Hand a camera to your guests</h2>
+      <p>Disposable cameras can be a fun way of engaging with your wedding guests and at the same time help you save up on a photographer, especially if you are someone who loves candid pictures. We know it is important to get those perfect solo shots too, so hire a professional for a few hours before the event to get those in, and let your guests do the magic.</p>
 
-      <h2>Disposable cameras on the tables</h2>
-      <p>Put a few single-use film cameras on each table and let guests shoot the evening. The cost is negligible next to a second shooter, and the results are the frames your professional could never get: the table at two in the morning, the uncle mid-story, your cousins in the corridor.</p>
-      <p>Collect them in a labelled basket at the exit, or you will find three of them in a taxi.</p>
+      <h2>Make the outfit rewearable</h2>
+      <p>Here is our hot take, your wedding outfit should be rewearable. If you are putting in the bucks, you should be able to flaunt it on multiple occasions post wedding. Pick a timeless base piece and tastefully accessorize it for your big day. The trick lies in how you style it, and you will have a different outfit each time. But if you are someone who wants to walk with the trend, we suggest renting your outfit.</p>
 
-      <h2>Outfits you will wear again</h2>
-      <p>A lehenga worn once and stored is the least efficient money at the entire wedding. Separates worn again at someone else's function, a saree that re-enters the wardrobe, or a bandhgala that works as eveningwear all quietly halve their own cost.</p>
-      <p>Rental for the heaviest single-function pieces is now genuinely good, particularly for grooms and for the sangeet. Wearing your mother's saree for one function costs nothing and is usually the photograph the family keeps.</p>
-
-      <h2>Where not to save</h2>
-      <p>Protect the photographer, the food, and the sound. Those are the three things guests actually remember, and each is very difficult to fix afterwards. Everything else is negotiable.</p>
+      <h2>How to split the budget</h2>
+      <p>Essentially, allocate about 50 percent of your total budget to venue and catering, 10 percent to decoration, 10 percent to entertainment, 5 percent to beauty and attire, 5 percent to photography and videography, and 20 percent for other miscellaneous expenses, trust us, there are many.</p>
     `,
   },
   {
     slug: "bride-vanity-diaries",
+    image: "/blogs/bride-vanity-diaries.jpg",
     title: "The Bride Vanity Diaries",
     category: "Planning",
     author: "Wedding Central",
@@ -262,6 +258,7 @@ export const blogs: Blog[] = [
   },
   {
     slug: "experiential-games-in-weddings",
+    image: "/blogs/experiential-games-in-weddings.jpg",
     title: "Experiential Games in Weddings",
     category: "Planning",
     author: "Wedding Central",

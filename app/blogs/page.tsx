@@ -37,11 +37,17 @@ const SECTION_TITLES: Record<BlogCategory, string> = {
 };
 
 /**
- * Newest first, so the featured slot always holds the latest story and the
- * order of the data file never has to be maintained by hand.
+ * The story that takes the hero slot at the top of the hub, chosen by hand
+ * rather than by date so an editor decides what leads the page.
  */
+const FEATURED_SLUG = "bride-and-groom-outfits-a-modern-guide";
+
+/** Newest first, so the groups below read chronologically without hand ordering. */
 const sorted = [...blogs].sort((a, b) => b.date.localeCompare(a.date));
-const [featured, ...rest] = sorted;
+
+/* Falls back to the newest story if the featured slug is ever renamed away. */
+const featured = sorted.find((blog) => blog.slug === FEATURED_SLUG) ?? sorted[0];
+const rest = sorted.filter((blog) => blog.slug !== featured.slug);
 
 /**
  * The groups beneath the featured card. Drawn from `rest` rather than from the
