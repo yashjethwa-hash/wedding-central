@@ -94,3 +94,69 @@ body::before {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+/*
+ * Playlists page.
+ *
+ * The three things the deck needs that utilities cannot express: the sleeve's
+ * gradient and groove pattern (a pseudo-element), and two keyframes. Each
+ * sleeve's two colours arrive as --c1 and --c2 on the tile.
+ */
+.wc-sleeve {
+  background: linear-gradient(150deg, var(--c1) 0%, var(--c2) 78%);
+}
+
+/* Grooves, running off the bottom-right corner the way they do on the disc. */
+.wc-sleeve::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-radial-gradient(
+      circle at 86% 116%,
+      rgba(254, 245, 220, 0.13) 0 1px,
+      transparent 1px 10px
+    ),
+    linear-gradient(118deg, rgba(255, 255, 255, 0.1), transparent 46%);
+}
+
+/* The playlist name, swapping in as the record rolls. */
+.wc-name {
+  animation: wc-name-in 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes wc-name-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.6rem);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+/* Level bars on the "now playing" flag. */
+.wc-eq {
+  height: 30%;
+  animation: wc-eq 0.9s ease-in-out infinite;
+}
+
+@keyframes wc-eq {
+  0%,
+  100% {
+    height: 28%;
+  }
+  50% {
+    height: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wc-name,
+  .wc-eq {
+    animation: none;
+  }
+}
